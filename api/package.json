@@ -9,7 +9,7 @@
   },
   "apidoc": {
     "title": "ShareTempus API documentation",
-    "url": "http://104.236.60.113:8888/api"
+    "url": "http://api.sharetempus.com/v1"
   },
   "repository": {
     "type": "git",

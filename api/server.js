@@ -21,7 +21,7 @@
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
 
-    app.use('/api', auth, require('./routes/api'));
+    app.use('/v1', auth, require('./routes/api'));
     app.use('/agent', require('./routes/agentApi'));
 
     app.use(function(req, res, next) {
