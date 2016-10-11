@@ -1,0 +1,47 @@
+{
+  "name": "sharetempus-api",
+  "version": "0.1.0",
+  "description": "ShareTempus API documentation",
+  "main": "server.js",
+  "scripts": {
+    "test": "jasmine-node spec",
+    "start": "node ./bin/www"
+  },
+  "apidoc": {
+    "title": "ShareTempus API documentation",
+    "url": "http://104.236.60.113:8888/api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasBassetti/sharetempus.git"
+  },
+  "keywords": [
+    "api",
+    "insurance"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LucasBassetti/sharetempus/issues"
+  },
+  "homepage": "https://github.com/LucasBassetti/sharetempus#readme",
+  "devDependencies": {
+    "flightplan": "^0.6.14",
+    "jasmine-node": "^1.14.5"
+  },
+  "dependencies": {
+    "apiai": "^2.0.7",
+    "basic-auth-connect": "^1.0.0",
+    "body-parser": "^1.15.0",
+    "express": "^4.14.0",
+    "express-rate-limit": "^2.5.0",
+    "jsonwebtoken": "^6.2.0",
+    "mongodb": "^2.1.18",
+    "morgan": "^1.7.0",
+    "node-schedule": "^1.1.1",
+    "node-simple-schema": "0.0.4",
+    "nodemailer": "^2.4.1",
+    "randomid": "^1.0.0",
+    "request": "^2.72.0"
+  }
+}
