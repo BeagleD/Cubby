@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "airbnb"
+  ],
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "globals": {},
+  "rules": {
+    "no-unused-expressions": ["off"],
+    "no-use-before-define": ["off"],
+    "class-methods-use-this": ["off"],
+    "func-names": ["off"],
+    "import/no-mutable-exports": ["off"]
+  }
+}

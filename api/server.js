@@ -1,54 +1,13 @@
-(function() {
-    "use strict";
+import express from 'express';
+import { categoriesRouter } from './routes';
+import { API_VERSION } from './configs';
 
-    var express = require('express'),
-        basicAuth = require('basic-auth-connect'),
-        bodyParser = require('body-parser'),
-        app = express(),
-        config = require('./config'),
-        mongo = require('./services/mongo'),
-        STError = require('./lib/error');
+const app = express();
 
-    // Asynchronous authentication
-    var auth = basicAuth(function(user, pass, callback) {
+app.set('json spaces', 2);
 
-        // check user credentials
-        mongo.authenticateUser(user, function(error, result) {
-            callback(error, result);
-        });
-    });
+app.use(API_VERSION, categoriesRouter);
 
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json());
+app.listen(8888);
 
-    app.use('/v1', auth, require('./routes/api'));
-    app.use('/agent', require('./routes/agentApi'));
-
-    app.use(function(req, res, next) {
-
-        var error = new STError.STNotFoundError({
-            createdAt: new Date().getTime(),
-            type: 'not_found_error',
-            message: 'Not found',
-            details: req.url + ' not found'
-        });
-
-        next(error);
-    });
-
-    app.use(function(error, req, res, next) {
-
-        var propertiesToDelete = ['createdAt', 'rawType', 'data'];
-
-        for(var i = 0, len = propertiesToDelete.length; i < len; i++) {
-            delete error[propertiesToDelete[i]];
-        }
-
-        res.status(error.status || 500).send(JSON.stringify({ error: error }, null, 2));
-    });
-
-    app.listen(8888);
-
-    console.log('API is running on port 8888');
-
-})();
+console.log('API is running on port 8888');

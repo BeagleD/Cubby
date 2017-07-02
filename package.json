@@ -1,0 +1,52 @@
+{
+  "name": "sharetempus-api",
+  "version": "0.0.1",
+  "description": "sharetempus api",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon api.js dev --ignore 'tests/*.js'",
+    "forever": "forever start api.js",
+    "test": "./node_modules/.bin/mocha dev tests/**/*.spec.js --require babel-register",
+    "test:watch": "npm test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasBassetti/sharetempus-api.git"
+  },
+  "keywords": [
+    "sharetempus",
+    "api"
+  ],
+  "author": "Lucas Bassetti",
+  "bugs": {
+    "url": "https://github.com/LucasBassetti/sharetempus-api/issues"
+  },
+  "homepage": "https://github.com/LucasBassetti/sharetempus-api#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.2",
+    "babel-preset-latest": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1",
+    "forever": "^0.15.3",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "popsicle": "^9.1.0",
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0",
+    "sinon-stub-promise": "^4.0.0",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "moment": "^2.18.1",
+    "mongodb": "^2.2.29"
+  }
+}

@@ -1,192 +1,78 @@
-(function() {
-    'use strict';
+import moment from 'moment';
+import { MONGO_URL, MONGO_TEST_URL } from '../configs';
+import { ServerError, UnauthorizedError } from '../error';
 
-    var MongoClient = require( 'mongodb' ).MongoClient,
-        config = require('../config');
+const MongoClient = require('mongodb').MongoClient;
 
-    var _db, _dbLive, _user;
+class Mongo {
+  constructor(secretKey) {
+    this.secretKey = secretKey;
+    this.isLive = secretKey.indexOf('live') >= 0;
+    this.isTest = secretKey.indexOf('test') >= 0;
+  }
 
-    // Mongo
-    module.exports = {
+  connect() {
+    return new Promise((resolve, reject) => {
+      const { isLive, isTest, secretKey } = this;
 
-        /**
-         * @method authenticateUser
-         * @memberof Mongo
-         * @description authenticate user
-         * @param  {String} secretKey
-         * @param  {Function} callback
-         */
-        authenticateUser(secretKey, callback) {
-            var _this = this;
+      if (isLive || isTest) {
+        MongoClient.connect(MONGO_URL, (err, liveDB) => {
+          if (err) {
+            reject(new ServerError({
+              createdAt: moment().valueOf(),
+              message: 'API Error. Please try again in some minutes',
+              data: err,
+            }));
+          } else {
+            this.liveDB = liveDB;
 
-            if(!secretKey) {
-                callback(true, false);
-            }
-            else if(_user) {
-                checkSecretKey();
-            }
-            else {
-
-                if(secretKey.indexOf('live') >= 0) {
-                    MongoClient.connect(config.MONGO_URL, function(err, db) {
-                        _db = db;
-                        _dbLive = db;
-                        checkSecretKey();
-                    });
-                }
-                else if(secretKey.indexOf('test') >= 0) {
-                    MongoClient.connect(config.MONGO_URL, function(err, db) {
-                        _dbLive = db;
-
-                        MongoClient.connect(config.MONGO_TEST_URL, function(err, db) {
-                            _db = db;
-                            checkSecretKey();
-                        });
-                    });
-                }
-                else {
-                    callback(true, false);
-                }
-            }
-
-            function checkSecretKey() {
-
-                var db = _this.getDb(),
-                    query = {};
-
-                if(secretKey.indexOf('live') >= 0) {
-                    query = { 'private.secretKey': secretKey }
-                }
-                else {
-                    query = { 'private.secretTestKey': secretKey }
-                }
-
-                db.Users.findOne(query).then(function(user) {
-                    if(user) {
-                        _user = user;
-                        callback(false, true);
-                    }
-                    else {
-                        callback(true, false);
-                    }
-                });
-            }
-        },
-
-        /**
-         * @method getConnection
-         * @memberof Mongo
-         * @description get live or test connection based in secretKey
-         * @param  {String} secretKey
-         * @param  {Function} callback
-         */
-        getConnection(secretKey, callback, next) {
-            var _this = this;
-
-            if(secretKey.indexOf('live') >= 0) {
-                MongoClient.connect(config.MONGO_URL, function(err, db) {
-                    _db = db;
-                    _dbLive = db;
-                    checkSecretKey();
-                });
-            }
-            else if(secretKey.indexOf('test') >= 0) {
-                MongoClient.connect(config.MONGO_URL, function(err, db) {
-                    _dbLive = db;
-
-                    MongoClient.connect(config.MONGO_TEST_URL, function(err, db) {
-                        _db = db;
-                        checkSecretKey();
-                    });
-                });
-            }
-
-            function checkSecretKey() {
-
-                var db = _this.getDb(),
-                    query = {};
-
-                if(secretKey.indexOf('live') >= 0) {
-                    query = { 'private.secretKey': secretKey }
-                }
-                else {
-                    query = { 'private.secretTestKey': secretKey }
-                }
-
-                db.Users.findOne(query).then(function(user) {
-                    if(user) {
-                        _user = user;
-                        return callback();
-                    }
-                    else {
-                        return next(new Error('Invalid secret key'));
-                    }
-                });
-            }
-        },
-
-        /**
-         * @method getDb
-         * @memberof Mongo
-         * @description get mongo collections
-         * @return {Object}
-         */
-        getDb: function() {
-            return {
-                Counter: _db.collection('counter'),
-                Customers: _db.collection('customers'),
-                Matrix: _db.collection('matrix'),
-                Payments: _db.collection('payments'),
-                Policies: _db.collection('policies'),
-                Users: _dbLive.collection('users')
-            };
-        },
-
-        getLiveDb: function(callback) {
-            MongoClient.connect(config.MONGO_URL, function(err, db) {
-                if(!err) {
-                    var liveDb = {
-                        Counter: db.collection('counter'),
-                        Customers: db.collection('customers'),
-                        Matrix: db.collection('matrix'),
-                        Payments: db.collection('payments'),
-                        Policies: db.collection('policies'),
-                    }
-
-                    callback(false, liveDb)
-                }
-                else {
-                    callback(err, false);
-                }
+            MongoClient.connect(MONGO_TEST_URL, (testErr, testDB) => {
+              if (testErr) {
+                reject(new ServerError({
+                  createdAt: moment().valueOf(),
+                  message: 'API Error. Please try again in some minutes',
+                  data: err,
+                }));
+              } else {
+                this.testDB = testDB;
+                resolve();
+              }
             });
-        },
+          }
+        });
+      } else {
+        reject(new UnauthorizedError({
+          createdAt: moment().valueOf(),
+          message: `Invalid API Key provided: ${secretKey}`,
+        }));
+      }
+    });
+  }
 
-        getTestDb: function(callback) {
-            MongoClient.connect(config.MONGO_TEST_URL, function(err, db) {
-                if(!err) {
-                    var testDb = {
-                        Counter: db.collection('counter'),
-                        Customers: db.collection('customers'),
-                        Matrix: db.collection('matrix'),
-                        Payments: db.collection('payments'),
-                        Policies: db.collection('policies'),
-                    }
+  getDB() {
+    const { liveDB, testDB } = this;
+    const db = testDB || liveDB;
 
-                    callback(false, testDb)
-                }
-                else {
-                    callback(err, false);
-                }
-            });
-        },
-
-        getUser: function() {
-            return _user;
-        },
-
-        getUserId: function() {
-            return _user._id;
-        }
+    return {
+      Claims: db.collection('claims'), // testDB is provisory (should be liveDB)
+      Counter: db.collection('counter'),
+      Customers: db.collection('customers'),
+      Matrix: db.collection('matrix'),
+      Payments: db.collection('payments'),
+      Policies: db.collection('policies'),
+      Logs: db.collection('logs'),
+      Events: db.collection('events'),
+      Webhooks: db.collection('webhooks'),
+      Users: liveDB.collection('users'),
     };
+  }
 
-})();
+  close() {
+    const { liveDB, testDB } = this;
+
+    if (testDB) testDB.close();
+    if (liveDB) liveDB.close();
+  }
+}
+
+export default Mongo;
