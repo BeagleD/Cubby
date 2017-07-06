@@ -9,6 +9,8 @@
   ],
   "globals": {},
   "rules": {
+    "no-underscore-dangle": ["off"],
+    "no-restricted-syntax": ["off"],
     "no-unused-expressions": ["off"],
     "no-use-before-define": ["off"],
     "class-methods-use-this": ["off"],

@@ -7,7 +7,20 @@
     "start": "nodemon api.js dev --ignore 'tests/*.js'",
     "forever": "forever start api.js",
     "test": "./node_modules/.bin/mocha dev tests/**/*.spec.js --require babel-register",
-    "test:watch": "npm test -- --watch"
+    "test:watch": "npm test -- --watch",
+    "test:coverage": "nyc npm test"
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "tests/**"
+    ],
+    "extension": [
+      ".js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -37,6 +50,7 @@
     "forever": "^0.15.3",
     "mocha": "^3.4.2",
     "nodemon": "^1.11.0",
+    "nyc": "^11.0.3",
     "popsicle": "^9.1.0",
     "sinon": "^2.3.5",
     "sinon-chai": "^2.11.0",
@@ -47,6 +61,9 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "moment": "^2.18.1",
-    "mongodb": "^2.2.29"
+    "mongodb": "^2.2.29",
+    "node-simple-schema": "0.0.4",
+    "randomid": "^1.0.0",
+    "raven": "^2.1.0"
   }
 }

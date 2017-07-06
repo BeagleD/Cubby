@@ -34,7 +34,7 @@ describe('Categories', function () {
     expect(stubedRetrieve).to.have.been.calledOnce;
   });
 
-  it('should return the correct data', (done) => {
+  it('should retrieve the categories', (done) => {
     popsicle.request({
       method: 'GET',
       url: `${API_URL}/categories`,

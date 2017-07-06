@@ -1,24 +1,31 @@
 import moment from 'moment';
-import Mongo from '../services/mongo';
+import mongo from '../services/mongo';
 import { BadRequestError, UnauthorizedError } from '../error';
 
-const getCredentials = ({ req }) => new Promise((resolve, reject) => {
+const getCredentials = session => new Promise((resolve, reject) => {
+  const { req } = session;
   const authorization = req.headers.authorization;
 
   if (!authorization) {
-    reject(new UnauthorizedError({
-      createdAt: moment().valueOf(),
-      message: 'Authentication fails. You did not provide an API key.',
-    }));
+    reject({
+      error: new UnauthorizedError({
+        createdAt: moment().valueOf(),
+        message: 'Authentication fails. You did not provide an API key.',
+      }),
+    });
+    return;
   }
 
   const parts = authorization.split(' ');
 
   if (parts.length !== 2) {
-    reject(new BadRequestError({
-      createdAt: moment().valueOf(),
-      message: 'Bad request',
-    }));
+    reject({
+      error: new BadRequestError({
+        createdAt: moment().valueOf(),
+        message: 'Bad request',
+      }),
+    });
+    return;
   }
 
   const scheme = parts[0];
@@ -26,40 +33,61 @@ const getCredentials = ({ req }) => new Promise((resolve, reject) => {
   const index = credentials.indexOf(':');
 
   if (scheme !== 'Basic' || index < 0) {
-    reject(new BadRequestError({
-      createdAt: moment().valueOf(),
-      message: 'Bad request',
-    }));
+    reject({
+      error: new BadRequestError({
+        createdAt: moment().valueOf(),
+        message: 'Bad request',
+      }),
+    });
+    return;
   }
 
   const secretKey = credentials.slice(0, index);
+  session.setSecretKey(secretKey);
 
-  resolve({ req, secretKey });
+  resolve(session);
 });
 
-const authenticate = ({ req, secretKey }) => new Promise((resolve, reject) => {
-  const mongo = new Mongo(secretKey);
+const authenticate = session => new Promise((resolve, reject) => {
+  const { secretKey } = session;
+  const isLive = secretKey.indexOf('live') >= 0;
+  const isTest = secretKey.indexOf('test') >= 0;
+
+  if (!isLive && !isTest) {
+    reject({
+      error: new UnauthorizedError({
+        createdAt: moment().valueOf(),
+        message: `Invalid API Key provided: ${secretKey}`,
+      }),
+    });
+    return;
+  }
 
   mongo.connect().then(() => {
-    const { Users } = mongo.getDB();
-    const query = mongo.isLive ? {
+    const { UsersDB } = mongo.getDB(secretKey);
+    const query = isLive ? {
       'private.secretKey': secretKey,
     } : {
       'private.secretTestKey': secretKey,
     };
 
-    Users.findOne(query).then((user) => {
+    session.setMongo(mongo);
+
+    UsersDB.findOne(query).then((user) => {
       if (user) {
-        resolve({ req, user, mongo });
+        session.setUser(user);
+        resolve(session);
       } else {
-        reject(new UnauthorizedError({
-          createdAt: moment().valueOf(),
-          message: `Invalid API Key provided: ${secretKey}`,
-        }));
+        reject({
+          error: new UnauthorizedError({
+            createdAt: moment().valueOf(),
+            message: `Invalid API Key provided: ${secretKey}`,
+          }),
+        });
       }
     });
-  }).catch((err) => {
-    reject(err);
+  }).catch(({ error }) => {
+    reject({ error });
   });
 });
 

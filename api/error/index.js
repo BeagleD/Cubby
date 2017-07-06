@@ -1,7 +1,7 @@
-import BadRequestError from './bad-request';
-import InvalidRequestError from './invalid-request';
-import NotFoundError from './not-found';
-import RateLimitError from './rate-limit';
+import BadRequestError from './bad_request';
+import InvalidRequestError from './invalid_request';
+import NotFoundError from './not_found';
+import RateLimitError from './rate_limit';
 import ServerError from './server';
 import UnauthorizedError from './unauthorized';
 

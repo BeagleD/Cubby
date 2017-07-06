@@ -1,8 +1,18 @@
-import Session from './session';
+import Session from '../libs/session';
+import { getCredentials, authenticate } from '../authentication';
+import handleResponse from './response';
 
-function handleRequest(fn, args) {
-  const session = new Session(fn, args);
-  session.run();
+function handleRequest(method, { req, res, next }) {
+  const session = new Session({ req, res, next });
+
+  getCredentials(session)
+    .then(authenticate)
+    .then(method)
+    .then(handleResponse)
+    .catch(({ error }) => {
+      session.setError(error);
+      next(session);
+    });
 }
 
 export default handleRequest;

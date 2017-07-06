@@ -6,9 +6,10 @@ class Categories {
     this.retrieve = handleRequest.bind(undefined, this.retrieve);
   }
 
-  retrieve({ mongo }) {
+  retrieve(session) {
     return new Promise((resolve) => {
-      resolve({ mongo, response: categories });
+      session.setResponse(categories);
+      resolve(session);
     });
   }
 }

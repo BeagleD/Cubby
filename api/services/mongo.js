@@ -1,78 +1,68 @@
 import moment from 'moment';
 import { MONGO_URL, MONGO_TEST_URL } from '../configs';
-import { ServerError, UnauthorizedError } from '../error';
+import { ServerError } from '../error';
 
 const MongoClient = require('mongodb').MongoClient;
 
 class Mongo {
-  constructor(secretKey) {
-    this.secretKey = secretKey;
-    this.isLive = secretKey.indexOf('live') >= 0;
-    this.isTest = secretKey.indexOf('test') >= 0;
-  }
-
   connect() {
     return new Promise((resolve, reject) => {
-      const { isLive, isTest, secretKey } = this;
+      if (this.liveDB && this.testDB) {
+        resolve();
+        return;
+      }
 
-      if (isLive || isTest) {
-        MongoClient.connect(MONGO_URL, (err, liveDB) => {
-          if (err) {
-            reject(new ServerError({
+      MongoClient.connect(MONGO_URL, (err, liveDB) => {
+        if (err) {
+          reject({
+            error: new ServerError({
               createdAt: moment().valueOf(),
               message: 'API Error. Please try again in some minutes',
               data: err,
-            }));
-          } else {
-            this.liveDB = liveDB;
+            }),
+          });
+        } else {
+          this.liveDB = liveDB;
 
-            MongoClient.connect(MONGO_TEST_URL, (testErr, testDB) => {
-              if (testErr) {
-                reject(new ServerError({
+          MongoClient.connect(MONGO_TEST_URL, (testErr, testDB) => {
+            if (testErr) {
+              reject({
+                error: new ServerError({
                   createdAt: moment().valueOf(),
                   message: 'API Error. Please try again in some minutes',
-                  data: err,
-                }));
-              } else {
-                this.testDB = testDB;
-                resolve();
-              }
-            });
-          }
-        });
-      } else {
-        reject(new UnauthorizedError({
-          createdAt: moment().valueOf(),
-          message: `Invalid API Key provided: ${secretKey}`,
-        }));
-      }
+                  data: testErr,
+                }),
+              });
+            } else {
+              this.testDB = testDB;
+              resolve();
+            }
+          });
+        }
+      });
     });
   }
 
-  getDB() {
+  getDB(secretKey) {
+    const isLive = secretKey.indexOf('live') >= 0;
     const { liveDB, testDB } = this;
-    const db = testDB || liveDB;
+    const db = isLive ? liveDB : testDB;
 
     return {
-      Claims: db.collection('claims'), // testDB is provisory (should be liveDB)
-      Counter: db.collection('counter'),
-      Customers: db.collection('customers'),
-      Matrix: db.collection('matrix'),
-      Payments: db.collection('payments'),
-      Policies: db.collection('policies'),
-      Logs: db.collection('logs'),
-      Events: db.collection('events'),
-      Webhooks: db.collection('webhooks'),
-      Users: liveDB.collection('users'),
+      ClaimsDB: db.collection('claims'), // testDB is provisory (should be liveDB)
+      CounterDB: db.collection('counter'),
+      CustomersDB: db.collection('customers'),
+      MatrixDB: db.collection('matrix'),
+      PaymentsDB: db.collection('payments'),
+      PoliciesDB: db.collection('policies'),
+      LogsDB: db.collection('logs'),
+      EventsDB: db.collection('events'),
+      WebhooksDB: db.collection('webhooks'),
+      UsersDB: liveDB.collection('users'),
     };
-  }
-
-  close() {
-    const { liveDB, testDB } = this;
-
-    if (testDB) testDB.close();
-    if (liveDB) liveDB.close();
   }
 }
 
-export default Mongo;
+const mongo = new Mongo();
+
+export default mongo;
