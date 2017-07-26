@@ -7,4 +7,12 @@ router.post('/customers/create', (req, res, next) => {
   ShareTempus.customers.create({ req, res, next });
 });
 
+router.post('/customers/update', (req, res, next) => {
+  ShareTempus.customers.update({ req, res, next });
+});
+
+router.get('/customers/:customer', (req, res, next) => {
+  ShareTempus.customers.retrieve({ req, res, next });
+});
+
 export default router;

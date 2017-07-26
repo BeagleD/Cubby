@@ -9,6 +9,7 @@
   ],
   "globals": {},
   "rules": {
+    "no-param-reassign": ["off"],
     "no-underscore-dangle": ["off"],
     "no-restricted-syntax": ["off"],
     "no-unused-expressions": ["off"],
