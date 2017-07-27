@@ -3,8 +3,9 @@ import bodyParser from 'body-parser';
 import {
   categoriesRouter,
   customersRouter,
-  notFoundRouter,
   errorRouter,
+  notFoundRouter,
+  policiesRouter,
 } from './routes';
 import { API_VERSION, SIZE_LIMIT } from './configs';
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json({ limit: SIZE_LIMIT }));
 
 app.use(API_VERSION, categoriesRouter);
 app.use(API_VERSION, customersRouter);
+app.use(API_VERSION, policiesRouter);
 
 app.use(notFoundRouter);
 app.use(errorRouter);

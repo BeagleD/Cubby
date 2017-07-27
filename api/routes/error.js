@@ -8,7 +8,7 @@ const errorRouter = (session, req, res, next) => {
 
   // capture server errors in sentry
   if (error.status === 500) {
-    Raven.captureException(error);
+    // Raven.captureException(error);
   // require basic authentication
   } else if (error.status === 401) {
     res.statusCode = 401;
