@@ -33,6 +33,7 @@ describe('Policies', function () {
         const customer = JSON.parse(res.body);
         if (!customer.error) {
           createdCustomer = customer;
+          validPolicy.customer = customer.id;
         }
         done();
       });
@@ -53,9 +54,9 @@ describe('Policies', function () {
     if (createdCustomer && createdCustomer.id) {
       const { email, id } = createdCustomer;
       CustomersDB.remove({ email, id }, () => {
-        if (createdPolicy && createdPolicy.id) {
+        if (createdPolicy && createdPolicy.token) {
           const { customer } = createdPolicy;
-          PoliciesDB.remove({ customer, id: createdPolicy.id }, () => {
+          PoliciesDB.remove({ customer, token: createdPolicy.token }, () => {
             done();
           });
         } else {
@@ -92,7 +93,7 @@ describe('Policies', function () {
   it('should create a policy quote', (done) => {
     popsicle.request({
       method: 'POST',
-      url: `${API_URL}/policies/create`,
+      url: `${API_URL}/policies/quote`,
       headers: HEADERS,
       body: validPolicy,
     }).then((res) => {
@@ -102,7 +103,8 @@ describe('Policies', function () {
       } else {
         createdPolicy = policy;
         expect(res.status).to.be.equal(200);
-        expect(policy.id).to.exist;
+        expect(policy.quote).to.exist;
+        expect(policy.token).to.exist;
         done();
       }
     });

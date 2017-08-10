@@ -38,6 +38,7 @@ class Session {
   setResponse(response, type) {
     const keys = {
       customers: ['_id', 'userId'],
+      policies: ['_id', 'userId', 'private'],
     };
     const keysToRemove = keys[type];
 

@@ -20,7 +20,6 @@ const CUSTOMER = {
 };
 
 const POLICY = {
-  customer: 'cus_dD2r2Ib8kPMhg5C3YvlqRwb7',
   currency: 'usd',
   startDate: moment().valueOf(),
   endDate: moment().add(1, 'day').valueOf(),

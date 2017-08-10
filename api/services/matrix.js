@@ -148,7 +148,90 @@ class Matrix {
   }
 
   generatePolicyQuote({ session, policy }) {
+    return new Promise((resolve) => {
+      const { mongo, secretKey } = session;
+      const { MatrixDB } = mongo.getDB(secretKey);
+      const subcategory = policy.product.subcategory;
+      const startDate = new Date(policy.startDate);
+      const endDate = new Date(policy.endDate);
+      const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+      let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      const interval = {};
 
+      // number of years
+      interval.year = Math.floor(diffDays / 365);
+      diffDays %= 365;
+
+      // number of months
+      interval.month = Math.floor(diffDays / 30);
+      diffDays %= 30;
+
+      // number of weeks
+      interval.week = Math.floor(diffDays / 7);
+      diffDays %= 7;
+
+      // number of days
+      interval.day = diffDays;
+
+      MatrixDB.find().toArray((err, matrices) => {
+        let matrix = {};
+
+        if (matrices.length > 0) {
+          matrix = matrices[0];
+
+          if (!matrix[subcategory]) {
+            matrix[subcategory] = this.generateNewMatrix();
+          }
+        } else {
+          matrix[subcategory] = this.generateNewMatrix();
+        }
+
+        // increment total
+        matrix[subcategory].total += 1;
+
+        // calculate value
+        const { price } = matrix[subcategory];
+        const productValue = policy.product.value;
+        const value = {
+          day: productValue * price.day * interval.day,
+          week: productValue * price.week * interval.week,
+          month: productValue * price.month * interval.month,
+          year: productValue * price.year * interval.year,
+        };
+        let quote = Math.round(value.day + value.week + value.month + value.year);
+        const priceRanges = [
+          { min: 0, max: 10000, value: 100 },
+          { min: 10000, max: 25000, value: 200 },
+          { min: 25000, max: 50000, value: 300 },
+          { min: 50000, max: 100000, value: 400 },
+          { min: 100000, max: 200000, value: 500 },
+          { min: 200000, max: 300000, value: 600 },
+          { min: 300000, max: 400000, value: 700 },
+          { min: 400000, max: 500000, value: 800 },
+          { min: 500000, max: 1000000, value: 900 },
+          { min: 1000000, max: 10000000, value: 2000 },
+          { min: 10000000, max: 50000000, value: 5000 },
+          { min: 50000000, max: 90000000, value: 9000 },
+        ];
+
+        // check minimum value for policy quotes
+        for (let i = 0, len = priceRanges.length; i < len; i += 1) {
+          const priceRange = priceRanges[i];
+
+          if (
+            productValue >= priceRange.min &&
+            productValue < priceRange.max &&
+            quote < priceRange.value
+          ) {
+            quote = priceRange.value;
+          }
+        }
+
+        policy.quote = quote;
+
+        resolve({ session, policy });
+      });
+    });
   }
 
   generateNewMatrix() {
@@ -184,4 +267,6 @@ class Matrix {
   }
 }
 
-export default Matrix;
+const matrix = Matrix.instance;
+
+export default matrix;

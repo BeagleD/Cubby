@@ -1,16 +1,17 @@
 import moment from 'moment';
-// import randomid from 'randomid';
+import randomid from 'randomid';
 import handleRequest from '../middlewares/request';
 import categories from '../libs/categories';
+import Matrix from '../services/matrix';
 import {
-  PolicySchema,
+  PolicyQuoteSchema,
   // PolicyUpdateSchema,
   validate,
 } from '../schemas';
 import {
   BadRequestError,
-  // InvalidRequestError,
-  // ServerError,
+  InvalidRequestError,
+  ServerError,
 } from '../error';
 
 class Policies {
@@ -25,7 +26,7 @@ class Policies {
     return new Promise((resolve, reject) => {
       const { req } = session;
       const policy = req.body;
-      const context = PolicySchema.newContext();
+      const context = PolicyQuoteSchema.newContext();
 
       // parse numbers to curl request
       if (policy) {
@@ -43,10 +44,14 @@ class Policies {
       const today = moment().startOf('day').valueOf();
       let errorMessage;
 
-      if (policy.startDate < today) {
+      if (!policy) {
+        errorMessage = 'You must provide the policy data';
+      } else if (policy.startDate < today) {
         errorMessage = 'startDate should be greater than today';
       } else if (policy.startDate > policy.endDate) {
         errorMessage = 'endDate should be greater than startDate';
+      } else if (!policy.product) {
+        errorMessage = 'You must provide the policy product data';
       } else if (!categories[policy.product.category]) {
         errorMessage = 'Invalid category';
       } else if (categories[policy.product.category].indexOf(policy.product.subcategory) < 0) {
@@ -65,8 +70,9 @@ class Policies {
         });
       } else {
         validate(context, policy, session)
-          // .then(checkCustomerExist)
-          // .then(createCustomer)
+          .then(findCustomer)
+          .then(Matrix.generatePolicyQuote)
+          .then(createPolicy)
           .then(resolve)
           .catch(({ message, error }) => {
             if (message) {
@@ -96,6 +102,71 @@ class Policies {
   update() {
 
   }
+}
+
+function findCustomer(session) {
+  return new Promise((resolve, reject) => {
+    const { mongo, req, secretKey, userId } = session;
+    const { CustomersDB } = mongo.getDB(secretKey);
+    const policy = req.body;
+
+    CustomersDB.findOne({ id: policy.customer, userId }).then((customer) => {
+      if (customer) {
+        // add customer _id
+        policy.customerId = customer._id;
+
+        resolve({ session, policy });
+      } else {
+        reject({
+          error: new InvalidRequestError({
+            createdAt: moment().valueOf(),
+            message: `Customer ${policy.customer} doesn't exist`,
+            data: customer,
+          }),
+        });
+      }
+    });
+  });
+}
+
+function createPolicy({ session, policy }) {
+  return new Promise((resolve, reject) => {
+    const { mongo, secretKey, userId } = session;
+    const { PoliciesDB } = mongo.getDB(secretKey);
+
+    // generate a policy id
+    policy.id = `pol_${randomid(24)}`;
+    // generate a claim ticket
+    policy.ticket = `ticket_${randomid(24)}`;
+    // generate policy creation date
+    policy.createdAt = (new Date()).getTime();
+    // get user id
+    policy.userId = userId;
+    // token
+    policy.token = `tok_${randomid(24)}`;
+    // private flags
+    policy.private = {
+      created: false,
+      paid: false,
+      matrixUpdated: false,
+      hasClaim: false,
+    };
+
+    PoliciesDB.insert(policy).then((newPolicy) => {
+      if (newPolicy) {
+        const { token, quote } = policy;
+        session.setResponse({ token, quote });
+        resolve(session);
+      } else {
+        reject({
+          error: new ServerError({
+            message: 'Failure to create policy. Please try again in some minutes',
+            data: policy,
+          }),
+        });
+      }
+    });
+  });
 }
 
 export default Policies;
