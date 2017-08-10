@@ -142,6 +142,44 @@ describe('Policies', function () {
     });
   });
 
+  it('should return error when try update a policy with invalid field', (done) => {
+    popsicle.request({
+      method: 'POST',
+      url: `${API_URL}/policies/update`,
+      headers: HEADERS,
+      body: {
+        id: createdPolicy.id,
+        invalidField: 'invalid content',
+      },
+    }).then((res) => {
+      const result = JSON.parse(res.body);
+      expect(result.error).to.exist;
+      done();
+    });
+  });
+
+  it('should update a policy', (done) => {
+    popsicle.request({
+      method: 'POST',
+      url: `${API_URL}/policies/update`,
+      headers: HEADERS,
+      body: {
+        id: createdPolicy.id,
+        description: 'New description',
+      },
+    }).then((res) => {
+      const policy = JSON.parse(res.body);
+      if (policy.error) {
+        done();
+      } else {
+        expect(res.status).to.be.equal(200);
+        expect(policy.id).to.exist;
+        expect(policy.description).to.be.equal('New description');
+        done();
+      }
+    });
+  });
+
   it('should return error when try retrieve a policy with invalid id', (done) => {
     popsicle.request({
       method: 'GET',

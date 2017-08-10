@@ -6,7 +6,7 @@ import Matrix from '../services/matrix';
 import {
   PolicySchema,
   PolicyQuoteSchema,
-  // PolicyUpdateSchema,
+  PolicyUpdateSchema,
   validate,
 } from '../schemas';
 import {
@@ -116,7 +116,7 @@ class Policies {
         });
       } else {
         validate(context, { token }, session)
-          .then(findPolicy)
+          .then(findPolicyByToken)
           .then(registerPolicy)
           .then(resolve)
           .catch(({ message, error }) => {
@@ -168,12 +168,102 @@ class Policies {
     });
   }
 
-  update() {
+  update(session) {
+    return new Promise((resolve, reject) => {
+      const { req } = session;
+      const policy = req.body;
+      const context = PolicyUpdateSchema.newContext();
 
+      validate(context, policy, session)
+        .then(findPolicy)
+        .then(updatePolicy)
+        .then(resolve)
+        .catch(({ message, error }) => {
+          if (message) {
+            reject({
+              error: new BadRequestError({
+                message,
+                createdAt: moment().valueOf(),
+                data: policy,
+              }),
+            });
+          } else {
+            reject({ error });
+          }
+        });
+    });
   }
 }
 
 function findPolicy(session) {
+  return new Promise((resolve, reject) => {
+    const { req, mongo, userId, secretKey } = session;
+    const { PoliciesDB } = mongo.getDB(secretKey);
+    const policy = req.body;
+    const { id } = policy;
+
+    // check if customer exist
+    PoliciesDB.findOne({
+      userId,
+      id,
+    }).then((existedPolicy) => {
+      if (existedPolicy) {
+        updateExitedPolicyProps(existedPolicy, policy);
+        resolve({ session, policy: existedPolicy });
+      } else {
+        reject({
+          error: new InvalidRequestError({
+            createdAt: moment().valueOf(),
+            message: `Policy ${id} doesn't exist`,
+            data: policy,
+          }),
+        });
+      }
+    });
+  });
+
+  // update properties
+  function updateExitedPolicyProps(existingPolicy, policy) {
+    for (const prop in existingPolicy) {
+      if (policy[prop]) {
+        if (typeof (existingPolicy[prop]) === 'string') {
+          existingPolicy[prop] = policy[prop];
+        } else if (typeof (existingPolicy[prop]) === 'object') {
+          updateExitedPolicyProps(existingPolicy[prop], policy[prop]);
+        }
+      }
+    }
+  }
+}
+
+function updatePolicy({ session, policy }) {
+  return new Promise((resolve, reject) => {
+    const { mongo, secretKey, userId } = session;
+    const { PoliciesDB } = mongo.getDB(secretKey);
+    const { id } = policy;
+
+    PoliciesDB.update({
+      userId,
+      id,
+    }, {
+      $set: policy,
+    }).then((updatedPolicy) => {
+      if (updatedPolicy) {
+        session.setResponse(policy, 'policies');
+        resolve(session);
+      } else {
+        reject({
+          error: new ServerError({
+            message: 'Failure to update policy. Please try again in some minutes',
+            data: policy,
+          }),
+        });
+      }
+    });
+  });
+}
+
+function findPolicyByToken(session) {
   return new Promise((resolve, reject) => {
     const { mongo, req, secretKey, userId } = session;
     const token = req.body.token;
