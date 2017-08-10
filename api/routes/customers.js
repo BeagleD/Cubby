@@ -15,4 +15,8 @@ router.get('/customers/:customer', (req, res, next) => {
   ShareTempus.customers.retrieve({ req, res, next });
 });
 
+router.post('/customers/find', (req, res, next) => {
+  ShareTempus.customers.find({ req, res, next });
+});
+
 export default router;

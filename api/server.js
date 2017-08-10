@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import {
   categoriesRouter,
+  claimsRouter,
   customersRouter,
   errorRouter,
   notFoundRouter,
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({ limit: SIZE_LIMIT, extended: true }));
 app.use(bodyParser.json({ limit: SIZE_LIMIT }));
 
 app.use(API_VERSION, categoriesRouter);
+app.use(API_VERSION, claimsRouter);
 app.use(API_VERSION, customersRouter);
 app.use(API_VERSION, policiesRouter);
 

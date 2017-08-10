@@ -72,6 +72,14 @@ describe('Policies', function () {
     expect(ShareTempus.policies.quote).to.exist;
   });
 
+  it('should have create method', () => {
+    expect(ShareTempus.policies.create).to.exist;
+  });
+
+  it('should have retrieve method', () => {
+    expect(ShareTempus.policies.retrieve).to.exist;
+  });
+
   it('should call quote method', () => {
     ShareTempus.policies.quote();
     expect(stubedQuote).to.have.been.calledOnce;

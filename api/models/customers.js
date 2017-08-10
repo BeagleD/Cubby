@@ -15,8 +15,9 @@ import {
 class Customers {
   constructor() {
     this.create = handleRequest.bind(undefined, this.create);
-    this.retrieve = handleRequest.bind(undefined, this.retrieve);
     this.update = handleRequest.bind(undefined, this.update);
+    this.retrieve = handleRequest.bind(undefined, this.retrieve);
+    this.find = handleRequest.bind(undefined, this.find);
   }
 
   create(session) {
@@ -87,7 +88,7 @@ class Customers {
       const id = req.params.customer;
 
       if (id) {
-        CustomersDB.findOne({ userId, id }).then((customer) => {
+        CustomersDB.findOne({ id, userId }).then((customer) => {
           if (customer) {
             session.setResponse(customer, 'customers');
             resolve(session);
@@ -105,6 +106,38 @@ class Customers {
         reject({
           error: new BadRequestError({
             message: 'Customer id not provided',
+            data: {},
+          }),
+        });
+      }
+    });
+  }
+
+  find(session) {
+    return new Promise((resolve, reject) => {
+      const { req, mongo, userId, secretKey } = session;
+      const { CustomersDB } = mongo.getDB(secretKey);
+      const email = req.body.email;
+
+      if (email) {
+        CustomersDB.findOne({ email, userId }).then((customer) => {
+          if (customer) {
+            session.setResponse(customer, 'customers');
+            resolve(session);
+          } else {
+            reject({
+              error: new InvalidRequestError({
+                createdAt: moment().valueOf(),
+                message: `Customer ${email} not found`,
+                data: customer,
+              }),
+            });
+          }
+        });
+      } else {
+        reject({
+          error: new BadRequestError({
+            message: 'Customer email not provided',
             data: {},
           }),
         });

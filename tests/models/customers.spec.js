@@ -51,6 +51,18 @@ describe('Customers', function () {
     expect(ShareTempus.customers.create).to.exist;
   });
 
+  it('should have update method', () => {
+    expect(ShareTempus.customers.update).to.exist;
+  });
+
+  it('should have retrieve method', () => {
+    expect(ShareTempus.customers.retrieve).to.exist;
+  });
+
+  it('should have find method', () => {
+    expect(ShareTempus.customers.find).to.exist;
+  });
+
   it('should call create method', () => {
     ShareTempus.customers.create();
     expect(stubedCreate).to.have.been.calledOnce;
@@ -119,6 +131,39 @@ describe('Customers', function () {
       method: 'GET',
       url: `${API_URL}/customers/${createdCustomer.id}`,
       headers: HEADERS,
+    }).then((res) => {
+      const customer = JSON.parse(res.body);
+      if (customer.error) {
+        done();
+      } else {
+        expect(res.status).to.be.equal(200);
+        expect(customer.id).to.exist;
+        done();
+      }
+    });
+  });
+
+  it('should return error when try find a customer with no email', (done) => {
+    popsicle.request({
+      method: 'POST',
+      url: `${API_URL}/customers/find`,
+      headers: HEADERS,
+      body: {},
+    }).then((res) => {
+      const result = JSON.parse(res.body);
+      expect(result.error).to.exist;
+      done();
+    });
+  });
+
+  it('should find a customer', (done) => {
+    popsicle.request({
+      method: 'POST',
+      url: `${API_URL}/customers/find`,
+      headers: HEADERS,
+      body: {
+        email: createdCustomer.email,
+      },
     }).then((res) => {
       const customer = JSON.parse(res.body);
       if (customer.error) {
