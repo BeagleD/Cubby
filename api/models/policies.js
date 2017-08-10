@@ -4,6 +4,7 @@ import handleRequest from '../middlewares/request';
 import categories from '../libs/categories';
 import Matrix from '../services/matrix';
 import {
+  PolicySchema,
   PolicyQuoteSchema,
   // PolicyUpdateSchema,
   validate,
@@ -91,8 +92,48 @@ class Policies {
     });
   }
 
-  create() {
+  create(session) {
+    return new Promise((resolve, reject) => {
+      const { req } = session;
+      const token = req.body.token;
+      const context = PolicySchema.newContext();
 
+      if (!token) {
+        reject({
+          error: new BadRequestError({
+            message: 'Token not found',
+            createdAt: moment().valueOf(),
+            data: req.body,
+          }),
+        });
+      } else if (token.indexOf('tok_') !== 0) {
+        reject({
+          error: new BadRequestError({
+            message: `Token ${token} invalid`,
+            createdAt: moment().valueOf(),
+            data: token,
+          }),
+        });
+      } else {
+        validate(context, { token }, session)
+          .then(findPolicy)
+          .then(registerPolicy)
+          .then(resolve)
+          .catch(({ message, error }) => {
+            if (message) {
+              reject({
+                error: new BadRequestError({
+                  message,
+                  createdAt: moment().valueOf(),
+                  data: req.body,
+                }),
+              });
+            } else {
+              reject({ error });
+            }
+          });
+      }
+    });
   }
 
   retrieve() {
@@ -102,6 +143,65 @@ class Policies {
   update() {
 
   }
+}
+
+function findPolicy(session) {
+  return new Promise((resolve, reject) => {
+    const { mongo, req, secretKey, userId } = session;
+    const token = req.body.token;
+    const { PoliciesDB } = mongo.getDB(secretKey);
+
+    PoliciesDB.findOne({ token, userId }).then((policy) => {
+      if (!policy) {
+        reject({
+          error: new InvalidRequestError({
+            createdAt: moment().valueOf(),
+            message: 'Policy not found. Probably you use a invalid or expired token',
+            data: { token, userId },
+          }),
+        });
+      } else if (policy.private.created) {
+        reject({
+          error: new InvalidRequestError({
+            createdAt: moment().valueOf(),
+            message: `Policy ${policy.id} already created`,
+            data: policy,
+          }),
+        });
+      } else {
+        resolve({ session, policy });
+      }
+    });
+  });
+}
+
+function registerPolicy({ session, policy }) {
+  return new Promise((resolve, reject) => {
+    const { mongo, secretKey } = session;
+    const { token, userId } = policy;
+    const { PoliciesDB } = mongo.getDB(secretKey);
+
+    // create policy
+    policy.private.created = true;
+    // update created at
+    policy.createdAt = moment().valueOf();
+
+    PoliciesDB.update({ token, userId }, {
+      $set: policy,
+    }, (err) => {
+      if (err) {
+        reject({
+          error: new ServerError({
+            message: 'Failure to create policy. Please try again in some minutes',
+            data: policy,
+          }),
+        });
+      } else {
+        session.setResponse(policy, 'policies');
+        resolve(session);
+      }
+    });
+  });
 }
 
 function findCustomer(session) {
@@ -160,7 +260,7 @@ function createPolicy({ session, policy }) {
       } else {
         reject({
           error: new ServerError({
-            message: 'Failure to create policy. Please try again in some minutes',
+            message: 'Failure to create policy quote. Please try again in some minutes',
             data: policy,
           }),
         });

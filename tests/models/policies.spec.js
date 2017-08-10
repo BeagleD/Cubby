@@ -109,4 +109,36 @@ describe('Policies', function () {
       }
     });
   });
+
+  it('should return error when try create a policy with invalid token', (done) => {
+    popsicle.request({
+      method: 'POST',
+      url: `${API_URL}/policies/create`,
+      headers: HEADERS,
+      body: { token: 'invalid_token' },
+    }).then((res) => {
+      const result = JSON.parse(res.body);
+      expect(result.error).to.exist;
+      done();
+    });
+  });
+
+  it('should create a policy', (done) => {
+    popsicle.request({
+      method: 'POST',
+      url: `${API_URL}/policies/create`,
+      headers: HEADERS,
+      body: { token: createdPolicy.token },
+    }).then((res) => {
+      const policy = JSON.parse(res.body);
+      if (policy.error) {
+        done();
+      } else {
+        createdPolicy = policy;
+        expect(res.status).to.be.equal(200);
+        expect(policy.id).to.exist;
+        done();
+      }
+    });
+  });
 });
