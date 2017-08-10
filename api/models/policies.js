@@ -136,8 +136,36 @@ class Policies {
     });
   }
 
-  retrieve() {
+  retrieve(session) {
+    return new Promise((resolve, reject) => {
+      const { req, mongo, userId, secretKey } = session;
+      const { PoliciesDB } = mongo.getDB(secretKey);
+      const id = req.params.policy;
 
+      if (id) {
+        PoliciesDB.findOne({ userId, id }).then((policy) => {
+          if (policy) {
+            session.setResponse(policy, 'policies');
+            resolve(session);
+          } else {
+            reject({
+              error: new InvalidRequestError({
+                createdAt: moment().valueOf(),
+                message: `Policy ${id} not found`,
+                data: policy,
+              }),
+            });
+          }
+        });
+      } else {
+        reject({
+          error: new BadRequestError({
+            message: 'Policy id not provided',
+            data: {},
+          }),
+        });
+      }
+    });
   }
 
   update() {

@@ -11,4 +11,8 @@ router.post('/policies/create', (req, res, next) => {
   ShareTempus.policies.create({ req, res, next });
 });
 
+router.get('/policies/:policy', (req, res, next) => {
+  ShareTempus.policies.retrieve({ req, res, next });
+});
+
 export default router;

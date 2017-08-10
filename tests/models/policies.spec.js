@@ -141,4 +141,33 @@ describe('Policies', function () {
       }
     });
   });
+
+  it('should return error when try retrieve a policy with invalid id', (done) => {
+    popsicle.request({
+      method: 'GET',
+      url: `${API_URL}/policies/invalid_id`,
+      headers: HEADERS,
+    }).then((res) => {
+      const result = JSON.parse(res.body);
+      expect(result.error).to.exist;
+      done();
+    });
+  });
+
+  it('should retrieve a policy', (done) => {
+    popsicle.request({
+      method: 'GET',
+      url: `${API_URL}/policies/${createdPolicy.id}`,
+      headers: HEADERS,
+    }).then((res) => {
+      const policy = JSON.parse(res.body);
+      if (policy.error) {
+        done();
+      } else {
+        expect(res.status).to.be.equal(200);
+        expect(policy.id).to.exist;
+        done();
+      }
+    });
+  });
 });
