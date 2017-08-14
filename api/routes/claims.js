@@ -7,7 +7,7 @@ router.post('/claims/create', (req, res, next) => {
   ShareTempus.claims.create({ req, res, next });
 });
 
-router.get('/claims/:customer', (req, res, next) => {
+router.get('/claims/:claim', (req, res, next) => {
   ShareTempus.claims.retrieve({ req, res, next });
 });
 

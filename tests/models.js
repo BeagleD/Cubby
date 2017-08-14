@@ -1,5 +1,11 @@
 import moment from 'moment';
 
+const CLAIM = {
+  subject: 'iPhone 7 Damaged',
+  type: 'damaged',
+  content: 'My iPhone 7 fell and broke the screen',
+};
+
 const CUSTOMER = {
   email: 'email@test.com',
   legalEntity: {
@@ -34,6 +40,7 @@ const POLICY = {
 };
 
 export {
+  CLAIM,
   CUSTOMER,
   POLICY,
 };

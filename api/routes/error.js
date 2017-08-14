@@ -1,7 +1,7 @@
 import Raven from 'raven';
 import { RAVEN_KEY } from '../configs';
 
-Raven.config(RAVEN_KEY).install();
+// Raven.config(RAVEN_KEY).install();
 
 const errorRouter = (session, req, res, next) => {
   const { error } = session;

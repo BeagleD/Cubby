@@ -37,6 +37,7 @@ class Session {
 
   setResponse(response, type) {
     const keys = {
+      claims: ['_id', 'userId'],
       customers: ['_id', 'userId'],
       policies: ['_id', 'userId', 'private'],
     };
