@@ -9,7 +9,15 @@ import {
   notFoundRouter,
   policiesRouter,
 } from './routes';
+import {
+  startPaymentsSchedules,
+  startPoliciesSchedules,
+} from './schedules';
 import { API_VERSION, SIZE_LIMIT } from './configs';
+
+// start schedules
+startPaymentsSchedules();
+startPoliciesSchedules();
 
 const app = express();
 

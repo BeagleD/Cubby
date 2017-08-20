@@ -21,10 +21,10 @@ class Matrix {
     });
   }
 
-  updateMatrixValues({ session, policy, type }) {
+  // this method is used in policy schedule
+  updateMatrixValues({ db, policy, type }) {
     return new Promise((resolve) => {
-      const { mongo, secretKey } = session;
-      const { MatrixDB } = mongo.getDB(secretKey);
+      const { MatrixDB } = db;
       const { startDate, endDate, product } = policy;
       const { subcategory } = product;
       const timeDiff = Math.abs(Number(endDate) - Number(startDate));
@@ -137,9 +137,13 @@ class Matrix {
         matrix[subcategory].price = prices;
 
         if (matrices.length > 0) {
-          this.updateMatrix({ session, matrix });
+          MatrixDB.update({
+            _id: matrix._id,
+          }, {
+            $set: matrix,
+          });
         } else {
-          this.createMatrix({ session, matrix });
+          MatrixDB.insert(matrix);
         }
 
         resolve();

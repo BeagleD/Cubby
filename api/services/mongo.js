@@ -4,6 +4,9 @@ import { ServerError } from '../error';
 
 const MongoClient = require('mongodb').MongoClient;
 
+const singleton = Symbol('Mongo');
+const singletonEnforcer = Symbol('MongoEnforcer');
+
 class Mongo {
   connect() {
     return new Promise((resolve, reject) => {
@@ -95,8 +98,16 @@ class Mongo {
       UsersDB: liveDB.collection('users'),
     };
   }
+
+  static get instance() {
+    if (!this[singleton]) {
+      this[singleton] = new Mongo(singletonEnforcer);
+    }
+
+    return this[singleton];
+  }
 }
 
-const mongo = new Mongo();
+const mongo = Mongo.instance;
 
 export default mongo;
