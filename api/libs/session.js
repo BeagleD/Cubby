@@ -1,3 +1,8 @@
+import moment from 'moment';
+import randomid from 'randomid';
+import eventTypes from './event_types';
+import Webhook from '../services/webhook';
+
 class Session {
   constructor({ req, res, next }) {
     this.req = req;
@@ -9,13 +14,9 @@ class Session {
     this.mongo = undefined;
     this.user = undefined;
     this.userId = undefined;
+    this.logUserId = undefined;
     this.response = undefined;
     this.error = undefined;
-
-    // if (req && req.body && typeof req.body === 'object') {
-    //   console.log(req.body);
-    //   this.reqBody = JSON.parse(JSON.strigify(req.body));
-    // }
   }
 
   setSecretKey(secretKey) {
@@ -35,13 +36,19 @@ class Session {
     this.userId = userId;
   }
 
+  setError(error) {
+    this.error = error;
+  }
+
   setResponse(response, type) {
     const keys = {
       claims: ['_id', 'userId'],
       customers: ['_id', 'userId'],
+      events: ['_id', 'userId'],
       policies: ['_id', 'userId', 'private'],
     };
     const keysToRemove = keys[type];
+    this.logUserId = response.userId || this.userId;
 
     if (keysToRemove) {
       this.response = {};
@@ -56,8 +63,76 @@ class Session {
     }
   }
 
-  setError(error) {
-    this.error = error;
+  generateLog() {
+    const { req, mongo, secretKey } = this;
+
+    if (mongo) {
+      const {
+        body,
+        connection,
+        headers,
+        method,
+        originalUrl,
+        params,
+        query,
+      } = req;
+      const { LogsDB } = mongo.getDB(secretKey);
+      const userId = this.logUserId || this.userId;
+      const responseBody = this.error || this.response;
+      const status = responseBody.status || 200;
+
+      const log = {
+        method,
+        params,
+        query,
+        responseBody,
+        status,
+        userId,
+        id: `req_${randomid(24)}`,
+        createdAt: moment().valueOf(),
+        url: originalUrl,
+        ip: headers['x-forwarded-for'] || connection.remoteAddress,
+        source: headers['user-agent'] || 'unknown',
+        requestBody: body,
+      };
+
+      LogsDB.insert(log).then((newLog) => {
+        if (newLog) {
+          this.generateEvent({ log, userId });
+        }
+      });
+    }
+  }
+
+  generateEvent({ log, userId }) {
+    let url = log.url.replace('/v1/', '');
+
+    if (log.status !== 200) {
+      url += '/failed';
+    }
+
+    const type = eventTypes[url];
+
+    if (type) {
+      const { mongo, secretKey } = this;
+      const isLive = secretKey.indexOf('live') >= 0;
+      const { EventsDB } = mongo.getDB(secretKey);
+      const event = {
+        type,
+        userId,
+        id: `evt_${randomid(24)}`,
+        createdAt: moment().valueOf(),
+        request: log.id,
+        isLiveMode: isLive,
+        data: log.responseBody,
+      };
+
+      EventsDB.insert(event).then((newEvent) => {
+        if (newEvent) {
+          Webhook.send(this, event);
+        }
+      });
+    }
   }
 }
 

@@ -5,6 +5,7 @@ import {
   claimsRouter,
   customersRouter,
   errorRouter,
+  eventsRouter,
   notFoundRouter,
   policiesRouter,
 } from './routes';
@@ -19,6 +20,7 @@ app.use(bodyParser.json({ limit: SIZE_LIMIT }));
 app.use(API_VERSION, categoriesRouter);
 app.use(API_VERSION, claimsRouter);
 app.use(API_VERSION, customersRouter);
+app.use(API_VERSION, eventsRouter);
 app.use(API_VERSION, policiesRouter);
 
 app.use(notFoundRouter);

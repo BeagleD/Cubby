@@ -3,6 +3,7 @@ import randomid from 'randomid';
 import handleRequest from '../middlewares/request';
 import categories from '../libs/categories';
 import Matrix from '../services/matrix';
+import Payments from '../services/payments';
 import {
   PolicySchema,
   PolicyQuoteSchema,
@@ -315,8 +316,10 @@ function registerPolicy({ session, policy }) {
           }),
         });
       } else {
-        session.setResponse(policy, 'policies');
-        resolve(session);
+        Payments.addPolicy({ session, policy }).then(() => {
+          session.setResponse(policy, 'policies');
+          resolve(session);
+        });
       }
     });
   });

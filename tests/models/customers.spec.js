@@ -3,12 +3,14 @@ import { describe, it, before, beforeEach, afterEach, after } from 'mocha';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonStubPromise from 'sinon-stub-promise';
-import { API_URL, TIMEOUT, HEADERS, SECRET_KEY } from '../configs';
+import { API_URL, TIMEOUT, HEADERS, SECRET_KEY, USER_ID } from '../configs';
 import { CUSTOMER } from '../models';
 import mongo from '../../api/services/mongo';
 import ShareTempus from '../../api/models';
 
 const popsicle = require('popsicle');
+
+const userId = USER_ID;
 
 sinonStubPromise(sinon);
 chai.use(sinonChai);
@@ -97,6 +99,30 @@ describe('Customers', function () {
         expect(customer.id).to.exist;
         done();
       }
+    });
+  });
+
+  it('should log be created after create a customer', (done) => {
+    const { LogsDB } = mongo.getDB(SECRET_KEY);
+    LogsDB.findOne({
+      userId,
+      url: '/v1/customers/create',
+      status: 200,
+    }).then((log) => {
+      expect(log).to.exist;
+      done();
+    });
+  });
+
+
+  it('should event be created after create a customer', (done) => {
+    const { EventsDB } = mongo.getDB(SECRET_KEY);
+    EventsDB.findOne({
+      userId,
+      type: 'customer.created',
+    }).then((event) => {
+      expect(event).to.exist;
+      done();
     });
   });
 

@@ -1,7 +1,6 @@
 function handleResponse(session) {
-  const { mongo, res, response } = session;
-
-  // mongo.close();
+  const { res, response } = session;
+  session.generateLog();
   res.send(response);
 }
 

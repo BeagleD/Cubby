@@ -53,10 +53,10 @@ class Matrix {
           matrix = matrices[0];
 
           if (!matrix[subcategory]) {
-            matrix[subcategory] = this.generateNewMatrix();
+            matrix[subcategory] = generateNewMatrix();
           }
         } else {
-          matrix[subcategory] = this.generateNewMatrix();
+          matrix[subcategory] = generateNewMatrix();
         }
 
         // increment total
@@ -180,10 +180,10 @@ class Matrix {
           matrix = matrices[0];
 
           if (!matrix[subcategory]) {
-            matrix[subcategory] = this.generateNewMatrix();
+            matrix[subcategory] = generateNewMatrix();
           }
         } else {
-          matrix[subcategory] = this.generateNewMatrix();
+          matrix[subcategory] = generateNewMatrix();
         }
 
         // increment total
@@ -234,30 +234,6 @@ class Matrix {
     });
   }
 
-  generateNewMatrix() {
-    const percent = {
-      day: 0.15,
-      week: 0.15,
-      month: 0.15,
-      year: 0.15,
-    };
-    const price = {
-      day: (percent.day / 365),
-      week: (percent.week / 365) * 7,
-      month: (percent.month / 365) * 30,
-      year: (percent.year / 365) * 365,
-    };
-
-    return {
-      total: 0,
-      income: { day: 0, week: 0, month: 0, year: 0 },
-      expense: { day: 1, week: 1, month: 1, year: 1 },
-      profit: { day: 1, week: 1, month: 1, year: 1 },
-      averageProfit: { day: 1, week: 1, month: 1, year: 1 },
-      price,
-    };
-  }
-
   static get instance() {
     if (!this[singleton]) {
       this[singleton] = new Matrix(singletonEnforcer);
@@ -268,5 +244,29 @@ class Matrix {
 }
 
 const matrix = Matrix.instance;
+
+function generateNewMatrix() {
+  const percent = {
+    day: 0.15,
+    week: 0.15,
+    month: 0.15,
+    year: 0.15,
+  };
+  const price = {
+    day: (percent.day / 365),
+    week: (percent.week / 365) * 7,
+    month: (percent.month / 365) * 30,
+    year: (percent.year / 365) * 365,
+  };
+
+  return {
+    total: 0,
+    income: { day: 0, week: 0, month: 0, year: 0 },
+    expense: { day: 1, week: 1, month: 1, year: 1 },
+    profit: { day: 1, week: 1, month: 1, year: 1 },
+    averageProfit: { day: 1, week: 1, month: 1, year: 1 },
+    price,
+  };
+}
 
 export default matrix;

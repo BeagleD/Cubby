@@ -3,12 +3,14 @@ import { describe, it, before, beforeEach, afterEach, after } from 'mocha';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonStubPromise from 'sinon-stub-promise';
-import { API_URL, TIMEOUT, HEADERS, SECRET_KEY } from '../configs';
+import { API_URL, TIMEOUT, HEADERS, SECRET_KEY, USER_ID } from '../configs';
 import { CUSTOMER, POLICY } from '../models';
 import mongo from '../../api/services/mongo';
 import ShareTempus from '../../api/models';
 
 const popsicle = require('popsicle');
+
+const userId = USER_ID;
 
 sinonStubPromise(sinon);
 chai.use(sinonChai);
@@ -49,7 +51,13 @@ describe('Policies', function () {
   });
 
   after((done) => {
-    const { CustomersDB, PoliciesDB } = mongo.getDB(SECRET_KEY);
+    const {
+      CustomersDB,
+      EventsDB,
+      LogsDB,
+      PaymentsDB,
+      PoliciesDB,
+    } = mongo.getDB(SECRET_KEY);
 
     if (createdCustomer && createdCustomer.id) {
       const { email, id } = createdCustomer;
@@ -58,6 +66,10 @@ describe('Policies', function () {
           const { customer } = createdPolicy;
           PoliciesDB.remove({ customer, token: createdPolicy.token }, () => {
             done();
+
+            LogsDB.remove({ userId });
+            EventsDB.remove({ userId });
+            PaymentsDB.remove({ userId });
           });
         } else {
           done();
@@ -147,6 +159,38 @@ describe('Policies', function () {
         expect(policy.id).to.exist;
         done();
       }
+    });
+  });
+
+  it('should payment be created after create a policy', (done) => {
+    const { PaymentsDB } = mongo.getDB(SECRET_KEY);
+    PaymentsDB.findOne({ userId }).then((payment) => {
+      expect(payment).to.exist;
+      done();
+    });
+  });
+
+  it('should log be created after create a policy', (done) => {
+    const { LogsDB } = mongo.getDB(SECRET_KEY);
+    LogsDB.findOne({
+      userId,
+      url: '/v1/policies/create',
+      status: 200,
+    }).then((log) => {
+      expect(log).to.exist;
+      done();
+    });
+  });
+
+
+  it('should event be created after create a policy', (done) => {
+    const { EventsDB } = mongo.getDB(SECRET_KEY);
+    EventsDB.findOne({
+      userId,
+      type: 'policy.created',
+    }).then((event) => {
+      expect(event).to.exist;
+      done();
     });
   });
 
