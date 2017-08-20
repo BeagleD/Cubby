@@ -22,9 +22,17 @@ class Matrix {
   }
 
   // this method is used in policy schedule
-  updateMatrixValues({ db, policy, type }) {
+  updateMatrixValues({ session, db, policy, type }) {
     return new Promise((resolve) => {
-      const { MatrixDB } = db;
+      let MatrixDB;
+
+      if (session) {
+        const { mongo, secretKey } = session;
+        MatrixDB = mongo.getDB(secretKey).MatrixDB;
+      } else if (db) {
+        MatrixDB = db.MatrixDB;
+      }
+
       const { startDate, endDate, product } = policy;
       const { subcategory } = product;
       const timeDiff = Math.abs(Number(endDate) - Number(startDate));
