@@ -4,6 +4,7 @@ import handleRequest from '../middlewares/request';
 import categories from '../libs/categories';
 import Matrix from '../services/matrix';
 import Payments from '../services/payments';
+import Email from '../services/email';
 import {
   PolicySchema,
   PolicyQuoteSchema,
@@ -298,7 +299,7 @@ function registerPolicy({ session, policy }) {
   return new Promise((resolve, reject) => {
     const { mongo, secretKey } = session;
     const { token, userId } = policy;
-    const { PoliciesDB } = mongo.getDB(secretKey);
+    const { CustomersDB, PoliciesDB } = mongo.getDB(secretKey);
 
     // create policy
     policy.private.created = true;
@@ -316,6 +317,16 @@ function registerPolicy({ session, policy }) {
           }),
         });
       } else {
+        CustomersDB.findOne({
+          userId,
+          id: policy.customer,
+        }).then((customer) => {
+          if (customer) {
+            // send ticket email
+            // Email.sendTicketEmail({ customer, policy });
+          }
+        });
+
         Payments.addPolicy({ session, policy }).then(() => {
           session.setResponse(policy, 'policies');
           resolve(session);
