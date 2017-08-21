@@ -1,7 +1,7 @@
 import moment from 'moment';
 import increment from './increment';
 
-class CustomersCounter {
+class PaymentsCounter {
   constructor() {
     this.increment = increment.bind(undefined, this.increment);
   }
@@ -14,12 +14,12 @@ class CustomersCounter {
       const month = date.month();
       const day = date.date() - 1;
 
-      const query = { 'customers.total': 1 };
-      query[`customers.${year}.total.${month}.${day}`] = 1;
+      const query = { 'payments.total': 1 };
+      query[`payments.${year}.total.${month}.${day}`] = 1;
 
       resolve({ session, counter, query });
     });
   }
 }
 
-export default CustomersCounter;
+export default PaymentsCounter;

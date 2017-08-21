@@ -2,6 +2,7 @@ import moment from 'moment';
 import randomid from 'randomid';
 import eventTypes from './event_types';
 import Webhook from '../services/webhook';
+import Counter from '../services/counter';
 
 class Session {
   constructor({ req, res, next }) {
@@ -98,6 +99,7 @@ class Session {
 
       LogsDB.insert(log).then((newLog) => {
         if (newLog) {
+          Counter.logs.increment({ session: this, data: log });
           this.generateEvent({ log, userId });
         }
       });
@@ -129,6 +131,7 @@ class Session {
 
       EventsDB.insert(event).then((newEvent) => {
         if (newEvent) {
+          Counter.events.increment({ session: this, data: event });
           Webhook.send(this, event);
         }
       });

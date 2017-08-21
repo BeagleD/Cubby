@@ -1,6 +1,7 @@
 import moment from 'moment';
 import randomid from 'randomid';
 import handleRequest from '../middlewares/request';
+import Counter from '../services/counter';
 import {
   ClaimSchema,
   validate,
@@ -203,6 +204,7 @@ function createClaim({ session, claim, policy, customer }) {
           });
         });
 
+        Counter.claims.increment({ session, data: claim });
         session.setResponse(claim, 'claims');
         resolve(session);
       } else {

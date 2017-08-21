@@ -52,6 +52,7 @@ describe('Policies', function () {
 
   after((done) => {
     const {
+      CounterDB,
       CustomersDB,
       EventsDB,
       LogsDB,
@@ -65,11 +66,12 @@ describe('Policies', function () {
         if (createdPolicy && createdPolicy.token) {
           const { customer } = createdPolicy;
           PoliciesDB.remove({ customer, token: createdPolicy.token }, () => {
-            done();
-
-            LogsDB.remove({ userId });
             EventsDB.remove({ userId });
+            LogsDB.remove({ userId });
             PaymentsDB.remove({ userId });
+            CounterDB.remove({ userId });
+
+            done();
           });
         } else {
           done();
@@ -182,7 +184,6 @@ describe('Policies', function () {
     });
   });
 
-
   it('should event be created after create a policy', (done) => {
     const { EventsDB } = mongo.getDB(SECRET_KEY);
     EventsDB.findOne({
@@ -192,6 +193,18 @@ describe('Policies', function () {
       expect(event).to.exist;
       done();
     });
+  });
+
+  it('should counter be incremented after create a customer', (done) => {
+    setTimeout(() => {
+      const { CounterDB } = mongo.getDB(SECRET_KEY);
+      CounterDB.findOne({ userId }).then((counter) => {
+        expect(counter).to.exist;
+        expect(counter.policies.customers).to.exist;
+        expect(counter.policies.total).to.be.equal(1);
+        done();
+      });
+    }, 300);
   });
 
   it('should return error when try update a policy with invalid field', (done) => {

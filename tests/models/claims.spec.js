@@ -3,7 +3,7 @@ import { describe, it, before, beforeEach, afterEach, after } from 'mocha';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import sinonStubPromise from 'sinon-stub-promise';
-import { API_URL, TIMEOUT, HEADERS, SECRET_KEY } from '../configs';
+import { API_URL, TIMEOUT, HEADERS, SECRET_KEY, USER_ID } from '../configs';
 import { CLAIM, CUSTOMER, POLICY } from '../models';
 import mongo from '../../api/services/mongo';
 import ShareTempus from '../../api/models';
@@ -13,6 +13,8 @@ const popsicle = require('popsicle');
 sinonStubPromise(sinon);
 chai.use(sinonChai);
 // chai.use(chaiHttp);
+
+const userId = USER_ID;
 
 describe('Claims', function () {
   this.timeout(TIMEOUT);
@@ -78,10 +80,13 @@ describe('Claims', function () {
   });
 
   after((done) => {
-    const { ClaimsDB, CustomersDB, PoliciesDB } = mongo.getDB(SECRET_KEY);
+    const { ClaimsDB, CounterDB, CustomersDB, PoliciesDB } = mongo.getDB(SECRET_KEY);
+
+    CounterDB.remove({ userId });
 
     if (createdCustomer && createdCustomer.id) {
       const { email, id } = createdCustomer;
+
       CustomersDB.remove({ email, id }, () => {
         if (createdPolicy && createdPolicy.token) {
           const { customer } = createdPolicy;

@@ -5,6 +5,7 @@ import categories from '../libs/categories';
 import Matrix from '../services/matrix';
 import Payments from '../services/payments';
 import Email from '../services/email';
+import Counter from '../services/counter';
 import {
   PolicySchema,
   PolicyQuoteSchema,
@@ -328,6 +329,7 @@ function registerPolicy({ session, policy }) {
         });
 
         Payments.addPolicy({ session, policy }).then(() => {
+          Counter.policies.increment({ session, data: policy });
           session.setResponse(policy, 'policies');
           resolve(session);
         });

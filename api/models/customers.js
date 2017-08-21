@@ -1,6 +1,7 @@
 import moment from 'moment';
 import randomid from 'randomid';
 import handleRequest from '../middlewares/request';
+import Counter from '../services/counter';
 import {
   CustomerSchema,
   CustomerUpdateSchema,
@@ -255,6 +256,7 @@ function createCustomer({ session, customer }) {
 
     CustomersDB.insert(customer).then((newCustomer) => {
       if (newCustomer) {
+        Counter.customers.increment({ session, data: customer });
         session.setResponse(customer, 'customers');
         resolve(session);
       } else {

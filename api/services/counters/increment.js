@@ -1,95 +1,51 @@
-const counters = [];
-
-function increment(method, { session }) {
-  const { userId } = session;
-  const ids = counters.map(counter => counter.userId);
-
-  if (ids.indexOf(userId) < 0) {
-    findCounter({ session })
-      .then(method)
-      .then(update);
-  } else {
-    // wait user counter finish until start another
-    setTimeout(() => {
-      increment(method, { session });
-    }, 5000);
-  }
+function increment(method, { session, data }) {
+  findCounter({ session, data })
+    .then(method)
+    .then(update);
 }
 
-function findCounter({ session }) {
+function findCounter({ session, data }) {
   return new Promise((resolve) => {
-    const { mongo, secretKey, userId } = session;
-    const CounterDB = mongo.getDb(secretKey);
+    const { mongo, secretKey } = session;
+    const { userId } = data;
+    const { CounterDB } = mongo.getDB(secretKey);
 
     CounterDB.findOne({ userId }).then((counter) => {
       if (counter) {
-        counters.push(counter);
-        resolve({ session, counter });
+        resolve({ session, counter, data });
       } else {
-        createCounter({ session }).then(resolve);
+        createCounter({ session, data }).then(resolve);
       }
     });
   });
 }
 
-function createCounter({ session }) {
+function createCounter({ session, data }) {
   return new Promise((resolve) => {
-    const { mongo, userId, secretKey } = session;
-    const { CounterDB } = mongo.getDb(secretKey);
+    const { mongo, secretKey } = session;
+    const { userId } = data;
+    const { CounterDB } = mongo.getDB(secretKey);
 
-    const counter = {
-      userId,
-      claims: {
-        total: 0,
-        customers: {},
-      },
-      customers: {
-        total: 0,
-      },
-      events: {
-        total: 0,
-      },
-      logs: {
-        total: 0,
-      },
-      policies: {
-        total: 0,
-        canceled: 0,
-        value: 0,
-        canceledValue: 0,
-        customers: {},
-      },
-      payments: {
-        total: 0,
-      },
-    };
+    const counter = { userId };
 
     CounterDB.insert(counter, (error) => {
       if (!error) {
-        resolve({ session, counter });
+        resolve({ session, counter, data });
       }
     });
   });
 }
 
-function update({ session }) {
-  if (counters.length > 0) {
-    const { mongo } = session;
-    const { CounterDB } = mongo.getDb();
-    const counter = counters[0];
+function update({ session, counter, query }) {
+  const { mongo, secretKey } = session;
+  const { userId } = counter;
+  const { CounterDB } = mongo.getDB(secretKey);
 
-    CounterDB.update({
-      userId: counter.userId,
-    }, {
-      $set: counter,
-    }, (error) => {
-      if (!error) {
-        counters.splice(0, 1);
-      }
-
-      update({ session });
-    });
-  }
+  CounterDB.update({
+    userId,
+  }, {
+    $inc: query,
+  });
 }
 
 export default increment;

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import randomid from 'randomid';
+import Counter from './counter';
 
 const singleton = Symbol('Payments');
 const singletonEnforcer = Symbol('PaymentsEnforcer');
@@ -28,6 +29,7 @@ class Payments {
       };
 
       PaymentsDB.insert(payment).then(() => {
+        Counter.payments.increment({ session, data: payment });
         resolve();
       });
     });

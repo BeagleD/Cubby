@@ -35,7 +35,9 @@ describe('Customers', function () {
   });
 
   after((done) => {
-    const { CustomersDB } = mongo.getDB(SECRET_KEY);
+    const { CounterDB, CustomersDB } = mongo.getDB(SECRET_KEY);
+
+    CounterDB.remove({ userId });
 
     if (createdCustomer.id) {
       const { email, id } = createdCustomer;
@@ -124,6 +126,17 @@ describe('Customers', function () {
       expect(event).to.exist;
       done();
     });
+  });
+
+  it('should counter be incremented after create a customer', (done) => {
+    setTimeout(() => {
+      const { CounterDB } = mongo.getDB(SECRET_KEY);
+      CounterDB.findOne({ userId }).then((counter) => {
+        expect(counter).to.exist;
+        expect(counter.customers.total).to.be.equal(1);
+        done();
+      });
+    }, 300);
   });
 
   it('should update a customer', (done) => {
