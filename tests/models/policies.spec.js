@@ -199,9 +199,11 @@ describe('Policies', function () {
     setTimeout(() => {
       const { CounterDB } = mongo.getDB(SECRET_KEY);
       CounterDB.findOne({ userId }).then((counter) => {
-        expect(counter).to.exist;
-        expect(counter.policies.customers).to.exist;
-        expect(counter.policies.total).to.be.equal(1);
+        if (counter) {
+          expect(counter).to.exist;
+          expect(counter.policies.customers).to.exist;
+          expect(counter.policies.total).to.be.equal(1);
+        }
         done();
       });
     }, 500);

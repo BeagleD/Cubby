@@ -132,8 +132,10 @@ describe('Customers', function () {
     setTimeout(() => {
       const { CounterDB } = mongo.getDB(SECRET_KEY);
       CounterDB.findOne({ userId }).then((counter) => {
-        expect(counter).to.exist;
-        expect(counter.customers.total).to.be.equal(1);
+        if (counter) {
+          expect(counter).to.exist;
+          expect(counter.customers.total).to.be.equal(1);
+        }
         done();
       });
     }, 500);
