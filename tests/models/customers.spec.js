@@ -136,7 +136,7 @@ describe('Customers', function () {
         expect(counter.customers.total).to.be.equal(1);
         done();
       });
-    }, 300);
+    }, 500);
   });
 
   it('should update a customer', (done) => {

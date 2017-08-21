@@ -204,7 +204,7 @@ describe('Policies', function () {
         expect(counter.policies.total).to.be.equal(1);
         done();
       });
-    }, 300);
+    }, 500);
   });
 
   it('should return error when try update a policy with invalid field', (done) => {
