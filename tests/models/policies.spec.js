@@ -195,20 +195,6 @@ describe('Policies', function () {
     });
   });
 
-  it('should counter be incremented after create a customer', (done) => {
-    setTimeout(() => {
-      const { CounterDB } = mongo.getDB(SECRET_KEY);
-      CounterDB.findOne({ userId }).then((counter) => {
-        if (counter) {
-          expect(counter).to.exist;
-          expect(counter.policies.customers).to.exist;
-          expect(counter.policies.total).to.be.equal(1);
-        }
-        done();
-      });
-    }, 1000);
-  });
-
   it('should return error when try update a policy with invalid field', (done) => {
     popsicle.request({
       method: 'POST',

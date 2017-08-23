@@ -128,19 +128,6 @@ describe('Customers', function () {
     });
   });
 
-  it('should counter be incremented after create a customer', (done) => {
-    setTimeout(() => {
-      const { CounterDB } = mongo.getDB(SECRET_KEY);
-      CounterDB.findOne({ userId }).then((counter) => {
-        if (counter) {
-          expect(counter).to.exist;
-          expect(counter.customers.total).to.be.equal(1);
-        }
-        done();
-      });
-    }, 1000);
-  });
-
   it('should update a customer', (done) => {
     popsicle.request({
       method: 'POST',
