@@ -1,14 +1,21 @@
 {
   "name": "sharetempus-api",
-  "version": "0.0.1",
-  "description": "sharetempus api",
+  "version": "0.1.0",
+  "description": "ShareTempus API documentation",
   "main": "server.js",
   "scripts": {
     "start": "nodemon api.js dev --ignore 'tests/*.js'",
-    "forever": "forever start api.js",
+    "forever": "forever start api.js --uid 'api'",
     "test": "./node_modules/.bin/mocha dev tests/**/*.spec.js --require babel-register",
     "test:watch": "npm test -- --watch",
-    "test:coverage": "nyc npm test"
+    "test:coverage": "nyc npm test",
+    "docs": "node_modules/.bin/apidoc -i api/routes/ -o ./docs/",
+    "build": "tar -cvzf api.tar.gz ./api api.js .babelrc package.json",
+    "deploy": "scp api.tar.gz root@159.203.111.127:/home/api/api.tar.gz",
+    "deploy:service": "scp unix_service root@159.203.111.127:/etc/init.d/api"
+  },
+  "apidoc": {
+    "url": "http://api.sharetempus.com/v1"
   },
   "nyc": {
     "reporter": [
@@ -36,6 +43,7 @@
   },
   "homepage": "https://github.com/LucasBassetti/sharetempus-api#readme",
   "devDependencies": {
+    "apidoc": "git+https://github.com/LucasBassetti/apidoc.git",
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.5.2",
     "babel-preset-latest": "^6.24.1",

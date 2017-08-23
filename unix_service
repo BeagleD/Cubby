@@ -1,0 +1,58 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          api
+# Required-Start:    $local_fs $network $named $time $syslog
+# Required-Stop:     $local_fs $network $named $time $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Description:       sharetempus api
+### END INIT INFO
+
+API_DIR="/home/api/"
+API_EXEC="api.js"
+forever="/root/.nvm/versions/node/v8.2.1/bin/forever"
+
+###############
+
+USAGE="Usage: $0 {start|stop|restart|status}"
+
+start_api() {
+  echo "Starting ShareTempus api ..."
+  PATH="/root/.nvm/versions/node/v8.2.1/bin:$PATH"
+  cd "$API_DIR"
+  $forever start "$API_EXEC" --uid api
+}
+
+stop_api() {
+  cd "$API_DIR"
+  $forever stop "$API_EXEC"
+}
+
+status_api() {
+  $forever list
+}
+
+restart_api() {
+  cd "$API_DIR"
+  $forever restart "$API_EXEC"
+}
+
+case "$1" in
+  start)
+    start_api
+  ;;
+  stop)
+    stop_api
+  ;;
+  restart)
+    restart_api
+  ;;
+  status)
+    status_api
+  ;;
+  *)
+    echo $USAGE
+    exit 1
+  ;;
+esac

@@ -324,7 +324,7 @@ function registerPolicy({ session, policy }) {
         }).then((customer) => {
           if (customer) {
             // send ticket email
-            // Email.sendTicketEmail({ customer, policy });
+            Email.sendTicketEmail({ customer, policy });
           }
         });
 
