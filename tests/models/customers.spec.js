@@ -138,7 +138,7 @@ describe('Customers', function () {
         }
         done();
       });
-    }, 500);
+    }, 1000);
   });
 
   it('should update a customer', (done) => {

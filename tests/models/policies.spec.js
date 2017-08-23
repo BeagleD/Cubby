@@ -206,7 +206,7 @@ describe('Policies', function () {
         }
         done();
       });
-    }, 500);
+    }, 1000);
   });
 
   it('should return error when try update a policy with invalid field', (done) => {
