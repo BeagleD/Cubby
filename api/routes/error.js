@@ -13,7 +13,7 @@ const errorRouter = (session, req, res, next) => {
   } else if (error.status === 401) {
     res.statusCode = 401;
     res.setHeader('WWW-Authenticate', 'Basic realm="Authorization Required"');
-  } else {
+  } else if (session.generateLog) {
     session.generateLog();
   }
 
