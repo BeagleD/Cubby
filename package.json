@@ -15,7 +15,7 @@
     "deploy:service": "scp unix_service root@159.203.111.127:/etc/init.d/api"
   },
   "apidoc": {
-    "url": "http://api.sharetempus.com/v1"
+    "url": "https://api.sharetempus.com/v1"
   },
   "nyc": {
     "reporter": [
