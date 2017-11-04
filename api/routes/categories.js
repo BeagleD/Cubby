@@ -11,7 +11,7 @@ const router = express.Router();
 * @apiDescription Retrieve the product categories used to get a policy quote
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/categories \
+*   curl https://api.sharetempus.com/v1/categories \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth:
 *
 * @apiExample {node} node

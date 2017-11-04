@@ -11,7 +11,7 @@ const router = express.Router();
 * @apiDescription Retrieve a created event
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/event/evt_i5OkJyAi3ffM4mTjf68bRFz0 \
+*   curl https://api.sharetempus.com/v1/event/evt_i5OkJyAi3ffM4mTjf68bRFz0 \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth:
 *
 * @apiExample {node} node

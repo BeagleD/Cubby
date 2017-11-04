@@ -11,7 +11,7 @@ const router = express.Router();
 * @apiDescription Created a new claim
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/claims/create \
+*   curl https://api.sharetempus.com/v1/claims/create \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \
 *     -d subject="iPhone 7 Damaged" \
 *     -d type="damaged" \
@@ -121,7 +121,7 @@ router.post('/claims/create', (req, res, next) => {
 * @apiDescription Retrieve a created claim
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/claims/clm_NAlLt3lpam1THwijiL3nCyjR \
+*   curl https://api.sharetempus.com/v1/claims/clm_NAlLt3lpam1THwijiL3nCyjR \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth:
 *
 * @apiExample {node} node

@@ -11,7 +11,7 @@ const router = express.Router();
 * @apiDescription Created a new customer
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/customers/create \
+*   curl https://api.sharetempus.com/v1/customers/create \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \
 *     -d email="email@test.com" \
 *     -d "legalEntity[type]=individual" \
@@ -160,7 +160,7 @@ router.post('/customers/create', (req, res, next) => {
 * @apiDescription Update a customer
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/customers/update \
+*   curl https://api.sharetempus.com/v1/customers/update \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \
 *     -d "id=cus_dD2r2Ib8kPMhg5C3YvlqRwb7" \
 *     -d "legalEntity[address][line2]=Apt. 1A Bronx"
@@ -278,7 +278,7 @@ router.post('/customers/update', (req, res, next) => {
 * @apiDescription Retrieve a customer by id
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/customers/cus_oC3ImnDw1Iqw1b3sx5CITtbc \
+*   curl https://api.sharetempus.com/v1/customers/cus_oC3ImnDw1Iqw1b3sx5CITtbc \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth:
 *
 * @apiExample {node} node
@@ -372,7 +372,7 @@ router.get('/customers/:customer', (req, res, next) => {
 * @apiDescription Find a customer by email
 *
 * @apiExample {curl} curl
-*   curl http://api.sharetempus.com/v1/customers/find \
+*   curl https://api.sharetempus.com/v1/customers/find \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \
 *     -d email="email@test.com"
 *
