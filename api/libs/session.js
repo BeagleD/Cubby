@@ -65,11 +65,10 @@ class Session {
   }
 
   generateLog() {
-    const { req, mongo, secretKey } = this;
+    const { req, mongo, secretKey, reqBody } = this;
 
     if (mongo) {
       const {
-        body,
         connection,
         headers,
         method,
@@ -94,7 +93,7 @@ class Session {
         url: originalUrl,
         ip: headers['x-forwarded-for'] || connection.remoteAddress,
         source: headers['user-agent'] || 'unknown',
-        requestBody: body,
+        requestBody: reqBody,
       };
 
       LogsDB.insert(log).then((newLog) => {
