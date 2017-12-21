@@ -10,7 +10,7 @@ const eventTypes = {
   'policies/update': 'policy.updated',
   'policies/update/failed': 'policy.update.failed',
   'claims/create': 'claim.created',
-  'claims/create/failed': 'claim.create.faied',
+  'claims/create/failed': 'claim.create.failed',
 };
 
 export default eventTypes;
