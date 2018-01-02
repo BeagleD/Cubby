@@ -79,7 +79,12 @@ class Session {
       const { LogsDB } = mongo.getDB(secretKey);
       const userId = this.logUserId || this.userId;
       const responseBody = this.error || this.response;
-      const status = responseBody.status || 200;
+      let status = responseBody.status || 200;
+
+      // for claims
+      if (responseBody.status === 'opened') {
+        status = 200;
+      }
 
       const log = {
         method,
