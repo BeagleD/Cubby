@@ -212,7 +212,7 @@ class Matrix {
         };
         let quote = Math.round(value.day + value.week + value.month + value.year);
         const priceRanges = [
-          { min: 0, max: 10000, value: 12300 },
+          { min: 0, max: 10000, value: 100 },
           { min: 10000, max: 25000, value: 200 },
           { min: 25000, max: 50000, value: 300 },
           { min: 50000, max: 100000, value: 400 },
