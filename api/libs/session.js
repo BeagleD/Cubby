@@ -46,7 +46,7 @@ class Session {
       claims: ['_id', 'userId'],
       customers: ['_id', 'userId'],
       events: ['_id', 'userId'],
-      policies: ['_id', 'userId', 'private'],
+      policies: ['_id', 'userId', 'private', 'customerId'],
     };
     const keysToRemove = keys[type];
     this.logUserId = response.userId || this.userId;

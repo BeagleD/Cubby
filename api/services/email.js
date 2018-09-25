@@ -24,9 +24,9 @@ class Email {
       // text: 'Hello world', // plaintext body
       html: `
         <p>Hi ${customer.legalEntity.firstName}, </p>
-        <br/><br/>
+        <br/>
         <p>Thanks for use ShareTempus! Here is your policy details: </p></br>
-        <hr style="border: 0; border-bottom: 1px solid #ddd;"/>'
+        <hr style="border: 0; border-bottom: 1px solid #ddd;"/>
         <h4> Policy details: </h4>
         <ul>
           <li> Quote: $${formatValue(quote)} </li>
