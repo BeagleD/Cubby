@@ -22,7 +22,7 @@ const router = express.Router();
 *     -d "product[subcategory]=Cell Phones %26 Accessories" \
 *     -d "product[manufacturer]=Apple" \
 *     -d "product[value]=64900" \
-*     -d "description=Policy for iPhone 7"
+*     -d "description=Policy for iPhone 8"
 *
 * @apiExample {node} node
 *   var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');
