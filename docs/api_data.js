@@ -1771,6 +1771,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "renter",
+            "description": "<p>Customer id</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "product",
@@ -1858,7 +1865,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"startDate\": 1463108400000,\n  \"endDate\": 1463194800000,\n  \"currency\": \"usd\",\n  \"customer\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"product\": {\n    \"name\": \"iPhone 7\",\n    \"category\": \"Electronics\",\n    \"subcategory\": \"Cell Phones & Accessories\",\n    \"manufacturer\": \"Apple\",\n    \"value\": 64900\n  },\n  \"description\": \"Policy for iPhone 7\",\n  \"id\": \"pol_Re2UTmiZNd6hvn3eklRNOWET\",\n  \"ticket\": \"ticket_xB5CE0Xj\",\n  \"quote\": 200,\n  \"createdAt\": 1473458389559\n}",
+          "content": "{\n  \"startDate\": 1463108400000,\n  \"endDate\": 1463194800000,\n  \"currency\": \"usd\",\n  \"customer\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"renter\": \"cus_eN7LTGZnFboRULALItgd1qBk\",\n  \"product\": {\n    \"name\": \"iPhone 7\",\n    \"category\": \"Electronics\",\n    \"subcategory\": \"Cell Phones & Accessories\",\n    \"manufacturer\": \"Apple\",\n    \"value\": 64900\n  },\n  \"description\": \"Policy for iPhone 7\",\n  \"id\": \"pol_Re2UTmiZNd6hvn3eklRNOWET\",\n  \"ticket\": \"ticket_xB5CE0Xj\",\n  \"quote\": 200,\n  \"createdAt\": 1473458389559\n}",
           "type": "json"
         }
       ]
@@ -1914,17 +1921,17 @@ define({ "api": [
     "examples": [
       {
         "title": "curl",
-        "content": "curl https://api.sharetempus.com/v1/policies/quote \\\n  -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \\\n  -d startDate=1474473004564 \\\n  -d endDate=1475473004564 \\\n  -d currency=usd \\\n  -d customer=\"cus_dD2r2Ib8kPMhg5C3YvlqRwb7\" \\\n  -d \"product[name]=iPhone 7\" \\\n  -d \"product[category]=Electronics\" \\\n  -d \"product[subcategory]=Cell Phones %26 Accessories\" \\\n  -d \"product[manufacturer]=Apple\" \\\n  -d \"product[value]=64900\" \\\n  -d \"description=Policy for iPhone 8\"",
+        "content": "curl https://api.sharetempus.com/v1/policies/quote \\\n  -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \\\n  -d startDate=1474473004564 \\\n  -d endDate=1475473004564 \\\n  -d currency=usd \\\n  -d customer=\"cus_dD2r2Ib8kPMhg5C3YvlqRwb7\" \\\n  -d renter=\"cus_eN7LTGZnFboRULALItgd1qBk\" \\\n  -d \"product[name]=iPhone 7\" \\\n  -d \"product[category]=Electronics\" \\\n  -d \"product[subcategory]=Cell Phones %26 Accessories\" \\\n  -d \"product[manufacturer]=Apple\" \\\n  -d \"product[value]=64900\" \\\n  -d \"description=Policy for iPhone 7\"",
         "type": "curl"
       },
       {
         "title": "node",
-        "content": "var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\nShareTempus.policies.quote({\n  customer: 'cus_dD2r2Ib8kPMhg5C3YvlqRwb7',\n  currency: 'usd',\n  startDate: 1474473004564,\n  endDate: 1475473004564,\n  product: {\n    name: 'iPhone 7',\n    category: 'Electronics',\n    subcategory: 'Cell Phones & Accessories',\n    manufacturer: 'Apple',\n    value: 64900\n  },\n  description: 'Policy for iPhone 7',\n  metadata: {}\n}).then(function(quote) {\n  console.log(quote);\n}).catch(function(error) {\n  console.log(error);\n});",
+        "content": "var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\nShareTempus.policies.quote({\n  customer: 'cus_dD2r2Ib8kPMhg5C3YvlqRwb7',\n  renter: 'cus_eN7LTGZnFboRULALItgd1qBk',\n  currency: 'usd',\n  startDate: 1474473004564,\n  endDate: 1475473004564,\n  product: {\n    name: 'iPhone 7',\n    category: 'Electronics',\n    subcategory: 'Cell Phones & Accessories',\n    manufacturer: 'Apple',\n    value: 64900\n  },\n  description: 'Policy for iPhone 7',\n  metadata: {}\n}).then(function(quote) {\n  console.log(quote);\n}).catch(function(error) {\n  console.log(error);\n});",
         "type": "node"
       },
       {
         "title": "python",
-        "content": "from sharetempus import ShareTempus;\nsharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\npolicy = sharetempus.policies.quote({\n  customer: \"cus_dD2r2Ib8kPMhg5C3YvlqRwb7\",\n  currency: \"usd\",\n  startDate: 1474473004564,\n  endDate: 1475473004564,\n  product: {\n    name: \"iPhone 7\",\n    category: \"Electronics\",\n    subcategory: \"Cell Phones & Accessories\",\n    manufacturer: \"Apple\",\n    value: 64900\n  },\n  description: \"Policy for iPhone 7\",\n  metadata: {}\n});\nprint(policy);",
+        "content": "from sharetempus import ShareTempus;\nsharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\npolicy = sharetempus.policies.quote({\n  customer: \"cus_dD2r2Ib8kPMhg5C3YvlqRwb7\",\n  renter: \"cus_eN7LTGZnFboRULALItgd1qBk\",\n  currency: \"usd\",\n  startDate: 1474473004564,\n  endDate: 1475473004564,\n  product: {\n    name: \"iPhone 7\",\n    category: \"Electronics\",\n    subcategory: \"Cell Phones & Accessories\",\n    manufacturer: \"Apple\",\n    value: 64900\n  },\n  description: \"Policy for iPhone 7\",\n  metadata: {}\n});\nprint(policy);",
         "type": "python"
       }
     ],
@@ -1970,6 +1977,13 @@ define({ "api": [
             "optional": false,
             "field": "customer",
             "description": "<p>Customer id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "renter",
+            "description": "<p>(optional) Customer id</p>"
           },
           {
             "group": "Parameter",
@@ -2180,6 +2194,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "renter",
+            "description": "<p>Customer id</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "product",
@@ -2267,7 +2288,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"startDate\": 1463108400000,\n  \"endDate\": 1463194800000,\n  \"currency\": \"usd\",\n  \"customer\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"product\": {\n    \"name\": \"iPhone 7\",\n    \"category\": \"Electronics\",\n    \"subcategory\": \"Cell Phones & Accessories\",\n    \"manufacturer\": \"Apple\",\n    \"value\": 64900\n  },\n  \"description\": \"Policy for iPhone 7\",\n  \"id\": \"pol_Re2UTmiZNd6hvn3eklRNOWET\",\n  \"ticket\": \"ticket_xB5CE0Xj\",\n  \"quote\": 200,\n  \"createdAt\": 1473458389559\n}",
+          "content": "{\n  \"startDate\": 1463108400000,\n  \"endDate\": 1463194800000,\n  \"currency\": \"usd\",\n  \"customer\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"renter\": \"cus_eN7LTGZnFboRULALItgd1qBk\",\n  \"product\": {\n    \"name\": \"iPhone 7\",\n    \"category\": \"Electronics\",\n    \"subcategory\": \"Cell Phones & Accessories\",\n    \"manufacturer\": \"Apple\",\n    \"value\": 64900\n  },\n  \"description\": \"Policy for iPhone 7\",\n  \"id\": \"pol_Re2UTmiZNd6hvn3eklRNOWET\",\n  \"ticket\": \"ticket_xB5CE0Xj\",\n  \"quote\": 200,\n  \"createdAt\": 1473458389559\n}",
           "type": "json"
         }
       ]
@@ -2409,6 +2430,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "renter",
+            "description": "<p>Customer id</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "product",
@@ -2496,7 +2524,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"startDate\": 1463108400000,\n  \"endDate\": 1463194800000,\n  \"currency\": \"usd\",\n  \"customer\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"product\": {\n    \"name\": \"iPhone 7\",\n    \"category\": \"Electronics\",\n    \"subcategory\": \"Cell Phones & Accessories\",\n    \"manufacturer\": \"Apple\",\n    \"value\": 64900\n  },\n  \"description\": \"New description for Policy for iPhone 7\",\n  \"id\": \"pol_Re2UTmiZNd6hvn3eklRNOWET\",\n  \"ticket\": \"ticket_xB5CE0Xj\",\n  \"quote\": 200,\n  \"createdAt\": 1473458389559\n}",
+          "content": "{\n  \"startDate\": 1463108400000,\n  \"endDate\": 1463194800000,\n  \"currency\": \"usd\",\n  \"customer\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"renter\": \"cus_eN7LTGZnFboRULALItgd1qBk\",\n  \"product\": {\n    \"name\": \"iPhone 7\",\n    \"category\": \"Electronics\",\n    \"subcategory\": \"Cell Phones & Accessories\",\n    \"manufacturer\": \"Apple\",\n    \"value\": 64900\n  },\n  \"description\": \"New description for Policy for iPhone 7\",\n  \"id\": \"pol_Re2UTmiZNd6hvn3eklRNOWET\",\n  \"ticket\": \"ticket_xB5CE0Xj\",\n  \"quote\": 200,\n  \"createdAt\": 1473458389559\n}",
           "type": "json"
         }
       ]

@@ -55,6 +55,7 @@ const router = express.Router();
 *
 *   policy = sharetempus.policies.quote({
 *     customer: "cus_dD2r2Ib8kPMhg5C3YvlqRwb7",
+*     renter: "cus_eN7LTGZnFboRULALItgd1qBk",
 *     currency: "usd",
 *     startDate: 1474473004564,
 *     endDate: 1475473004564,
@@ -154,6 +155,7 @@ router.post('/policies/quote', (req, res, next) => {
 * @apiSuccess {Number} endDate End date of policy active period
 * @apiSuccess {String} currency Currency type
 * @apiSuccess {String} customer Customer id
+* @apiSuccess {String} renter Customer id
 * @apiSuccess {Object} product Product data
 * @apiSuccess {String} product.name Product name
 * @apiSuccess {String} product.category Product category (based in our <a href="#api-Categories-GetCategories">categories</a>)
@@ -173,6 +175,7 @@ router.post('/policies/quote', (req, res, next) => {
 *    "endDate": 1463194800000,
 *    "currency": "usd",
 *    "customer": "cus_oC3ImnDw1Iqw1b3sx5CITtbc",
+*    "renter": "cus_eN7LTGZnFboRULALItgd1qBk",
 *    "product": {
 *      "name": "iPhone 7",
 *      "category": "Electronics",
@@ -252,6 +255,7 @@ router.post('/policies/create', (req, res, next) => {
 * @apiSuccess {Number} endDate End date of policy active period
 * @apiSuccess {String} currency Currency type
 * @apiSuccess {String} customer Customer id
+* @apiSuccess {String} renter Customer id
 * @apiSuccess {Object} product Product data
 * @apiSuccess {String} product.name Product name
 * @apiSuccess {String} product.category Product category (based in our <a href="#api-Categories-GetCategories">categories</a>)
@@ -271,6 +275,7 @@ router.post('/policies/create', (req, res, next) => {
 *    "endDate": 1463194800000,
 *    "currency": "usd",
 *    "customer": "cus_oC3ImnDw1Iqw1b3sx5CITtbc",
+*    "renter": "cus_eN7LTGZnFboRULALItgd1qBk",
 *    "product": {
 *      "name": "iPhone 7",
 *      "category": "Electronics",
@@ -343,6 +348,7 @@ router.post('/policies/update', (req, res, next) => {
 * @apiSuccess {Number} endDate End date of policy active period
 * @apiSuccess {String} currency Currency type
 * @apiSuccess {String} customer Customer id
+* @apiSuccess {String} renter Customer id
 * @apiSuccess {Object} product Product data
 * @apiSuccess {String} product.name Product name
 * @apiSuccess {String} product.category Product category (based in our <a href="#api-Categories-GetCategories">categories</a>)
@@ -362,6 +368,7 @@ router.post('/policies/update', (req, res, next) => {
 *    "endDate": 1463194800000,
 *    "currency": "usd",
 *    "customer": "cus_oC3ImnDw1Iqw1b3sx5CITtbc",
+*    "renter": "cus_eN7LTGZnFboRULALItgd1qBk",
 *    "product": {
 *      "name": "iPhone 7",
 *      "category": "Electronics",
