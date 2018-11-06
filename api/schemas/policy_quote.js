@@ -9,7 +9,8 @@ const Product = new SimpleSchema({
 });
 
 const PolicyQuote = new SimpleSchema({
-  customer: { type: String },
+  customer: { type: String },   // asset-owner
+//  renter: {type: String , optional: true}, // asset-renter
   startDate: { type: Number },
   endDate: { type: Number },
   currency: { type: String },

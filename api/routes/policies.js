@@ -17,18 +17,20 @@ const router = express.Router();
 *     -d endDate=1475473004564 \
 *     -d currency=usd \
 *     -d customer="cus_dD2r2Ib8kPMhg5C3YvlqRwb7" \
+*     -d renter="cus_eN7LTGZnFboRULALItgd1qBk" \
 *     -d "product[name]=iPhone 7" \
 *     -d "product[category]=Electronics" \
 *     -d "product[subcategory]=Cell Phones %26 Accessories" \
 *     -d "product[manufacturer]=Apple" \
 *     -d "product[value]=64900" \
-*     -d "description=Policy for iPhone 8"
+*     -d "description=Policy for iPhone 7"
 *
 * @apiExample {node} node
 *   var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');
 *
 *   ShareTempus.policies.quote({
 *     customer: 'cus_dD2r2Ib8kPMhg5C3YvlqRwb7',
+*     renter: 'cus_eN7LTGZnFboRULALItgd1qBk',
 *     currency: 'usd',
 *     startDate: 1474473004564,
 *     endDate: 1475473004564,
@@ -74,6 +76,7 @@ const router = express.Router();
 * @apiParam {Number} endDate End date of policy active period
 * @apiParam {String} currency Currency type
 * @apiParam {String} customer Customer id
+* @apiParam {String} renter (optional) Customer id
 * @apiParam {Object} product Product data
 * @apiParam {String} product.name Product name
 * @apiParam {String} product.category Product category (based in our <a href="#api-Categories-GetCategories">categories</a>)

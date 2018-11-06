@@ -1,1 +1,14 @@
-define({  "url": "https://api.sharetempus.com/v1",  "name": "sharetempus-api",  "version": "0.1.0",  "description": "ShareTempus API documentation",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2017-11-04T10:31:27.007Z",    "url": "http://apidocjs.com",    "version": "0.16.1"  }});
+define({
+  "url": "https://api.sharetempus.com/v1",
+  "name": "sharetempus-api",
+  "version": "0.1.0",
+  "description": "ShareTempus API documentation",
+  "sampleUrl": false,
+  "apidoc": "0.2.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2018-11-06T17:10:25.240Z",
+    "url": "http://apidocjs.com",
+    "version": "0.16.1"
+  }
+});

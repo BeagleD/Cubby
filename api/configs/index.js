@@ -9,6 +9,7 @@ const RAVEN_KEY = 'https://a82dce46e102401c9407cf3514a5b736:eb9e5b18038446aaa6be
 let MONGO_URL = 'mongodb://admin:admin@127.0.0.1:27017/live';
 let MONGO_TEST_URL = 'mongodb://admin:admin@127.0.0.1:27017/test';
 
+// dev DB urls
 if (process.argv[2] === 'dev') {
   MONGO_URL = 'mongodb://admin:admin@ds015403.mlab.com:15403/sharetempus';
   MONGO_TEST_URL = 'mongodb://admin:admin@ds015403.mlab.com:15403/sharetempus-test';
