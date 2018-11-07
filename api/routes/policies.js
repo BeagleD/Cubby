@@ -112,6 +112,7 @@ const router = express.Router();
 *
 */
 router.post('/policies/quote', (req, res, next) => {
+  // console.log(ShareTempus);
   ShareTempus.policies.quote({ req, res, next });
 });
 

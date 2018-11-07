@@ -29,8 +29,10 @@ class Policies {
   quote(session) {
     return new Promise((resolve, reject) => {
       const { req } = session;
+      // console.log('SESSION =\n', session);
       const policy = req.body;
       const context = PolicyQuoteSchema.newContext();
+      // console.log('CONTEXT =\n', context);
 
       // parse numbers to curl request
       if (policy) {
@@ -46,12 +48,16 @@ class Policies {
       }
 
       const today = moment().startOf('day').valueOf();
+
       let errorMessage;
+
+      // console.log('today =', today);
+      // console.log('POLICY =\n', policy);
 
       if (!policy) {
         errorMessage = 'You must provide the policy data';
       } else if (policy.startDate < today) {
-        errorMessage = 'startDate should be greater than today';
+        errorMessage = 'startDate should be today or later';
       } else if (policy.startDate > policy.endDate) {
         errorMessage = 'endDate should be greater than startDate';
       } else if (!policy.product) {
@@ -343,11 +349,16 @@ function findCustomer(session) {
     const { mongo, req, secretKey, userId } = session;
     const { CustomersDB } = mongo.getDB(secretKey);
     const policy = req.body;
-
+    // console.log('policy =\n', policy);
+    // console.log('CustomersDB =\n', CustomersDB);
+    // console.log('mongo =\n', mongo );
+    // console.log('req =\n', req );
+    // console.log('secretKey =\n', secretKey );
+    // console.log('userId =', userId );
     CustomersDB.findOne({ id: policy.customer, userId }).then((customer) => {
       if (customer) {
         // add customer _id
-        policy.customerId = customer._id;
+        policy.customerId = customer._id;  // Customers collection -- _id field (key)
 
         resolve({ session, policy });
       } else {
@@ -360,6 +371,22 @@ function findCustomer(session) {
         });
       }
     });
+    CustomersDB.findOne({ id: policy.renter, userId }).then((renter) => {
+      if (renter) {
+        // add customer _id
+        policy.renterId = renter._id;  // Customers collection -- _id field (key)
+        resolve({ session, policy });
+      } else {
+        reject({
+          error: new InvalidRequestError({
+            createdAt: moment().valueOf(),
+            message: `Renter ${policy.renter} doesn't exist`,
+            data: renter,
+          }),
+        });
+      }
+    });
+    // console.log('policy =\n', policy);
   });
 }
 
@@ -394,7 +421,7 @@ function createPolicy({ session, policy }) {
       } else {
         reject({
           error: new ServerError({
-            message: 'Failure to create policy quote. Please try again in some minutes',
+            message: 'Failure to create policy quote. Please try again later',
             data: policy,
           }),
         });

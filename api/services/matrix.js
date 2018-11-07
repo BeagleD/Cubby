@@ -240,7 +240,8 @@ class Matrix {
         }
 
         policy.quote = quote;
-
+        // console.log('quote =\n', quote);
+        // console.log('policy =\n', policy);
         resolve({ session, policy });
       });
     });

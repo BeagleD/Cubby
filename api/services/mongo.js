@@ -20,19 +20,20 @@ class Mongo {
           reject({
             error: new ServerError({
               createdAt: moment().valueOf(),
-              message: 'Error connecting to Mongo Live DB.  Please try again in some minutes',
+              message: 'Error connecting to Mongo Live DB.  Please try again later',
               data: err,
             }),
           });
         } else {
           this.liveDB = liveDB;
 
+
           MongoClient.connect(MONGO_TEST_URL, (testErr, testDB) => {
             if (testErr) {
               reject({
                 error: new ServerError({
                   createdAt: moment().valueOf(),
-                  message: 'Error connecting to Mongo Test DB. Please try again in some minutes',
+                  message: 'Error connecting to Mongo Test DB. Please try again later',
                   data: testErr,
                 }),
               });

@@ -10,7 +10,7 @@ const Product = new SimpleSchema({
 
 const PolicyQuote = new SimpleSchema({
   customer: { type: String },   // asset-owner
-//  renter: {type: String , optional: true}, // asset-renter
+  renter: {type: String , optional: true}, // asset-renter
   startDate: { type: Number },
   endDate: { type: Number },
   currency: { type: String },
@@ -19,4 +19,5 @@ const PolicyQuote = new SimpleSchema({
   metadata: { type: Object, blackbox: true, optional: true },
 });
 
+// console.log('PolicyQuote =\n', PolicyQuote);
 export default PolicyQuote;

@@ -9,6 +9,10 @@ class Categories {
   retrieve(session) {
     return new Promise((resolve) => {
       session.setResponse(categories);
+      // console.log('session.response =\n', session.response);
+      // console.log('session =\n', session);
+      // console.log('session.user =\n', session.user);
+      // console.log('categories =\n', categories);
       resolve(session);
     });
   }

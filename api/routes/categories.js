@@ -38,6 +38,7 @@ const router = express.Router();
 *
 */
 router.get('/categories', (req, res, next) => {
+  // console.log(ShareTempus);
   ShareTempus.categories.retrieve({ req, res, next });
 });
 
