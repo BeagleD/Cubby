@@ -25,9 +25,9 @@ class Email {
       html: `
         <p>Hi ${customer.legalEntity.firstName}, </p>
         <br/>
-        <p>Thanks for use ShareTempus! Here is your policy details: </p></br>
+        <p>Thank you for using ShareTempus! Here are the details of your coverage: </p></br>
         <hr style="border: 0; border-bottom: 1px solid #ddd;"/>
-        <h4> Policy details: </h4>
+        <h4> Covered Transaction details: </h4>
         <ul>
           <li> Quote: $${formatValue(quote)} </li>
           <li> Period: ${formatDate(startDate)} - ${formatDate(endDate)} </li>
@@ -43,7 +43,7 @@ class Email {
           <li> Manufacturer: ${product.manufacturer} </li>
         </ul>
         <hr style="border: 0; border-bottom: 1px solid #ddd;"/>
-        <p>You can use your ticket to open a claim clicking <a href="http://customers.sharetempus.com">here</a>. </p></br>
+        <p>You can use your ticket to open a claim clicking <a href="https://customers.sharetempus.com">here</a>. </p></br>
         <small>© 2017 ShareTempus</small>
       `,
     };

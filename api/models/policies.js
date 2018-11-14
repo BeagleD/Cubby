@@ -324,15 +324,33 @@ function registerPolicy({ session, policy }) {
           }),
         });
       } else {
+          CustomersDB.findOne({
+            userId,
+            id: policy.customer,
+          }).then((customer) => {
+            // console.log('userId =', userId);
+            if (customer) {
+              // send ticket email to owner
+              console.log('sending policy email to asset owner at',customer.email)
+              // console.log('customer =\n', customer);
+              // console.log('policy =\n', policy);
+              Email.sendTicketEmail({ customer, policy });
+            }
+        });
+
         CustomersDB.findOne({
           userId,
-          id: policy.customer,
+          id: policy.renter,
         }).then((customer) => {
+          // console.log('userId =', userId);
           if (customer) {
-            // send ticket email
+            // send ticket email to renter
+            console.log('sending policy email to asset renter at',customer.email)
+            // console.log('customer =\n', customer);
+            // console.log('policy =\n', policy);
             Email.sendTicketEmail({ customer, policy });
           }
-        });
+      });
 
         Payments.addPolicy({ session, policy }).then(() => {
           Counter.policies.increment({ session, data: policy });
