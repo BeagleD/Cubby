@@ -1983,7 +1983,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "renter",
-            "description": "<p>(optional) Customer id</p>"
+            "description": "<p>Customer id</p>"
           },
           {
             "group": "Parameter",

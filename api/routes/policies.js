@@ -77,7 +77,7 @@ const router = express.Router();
 * @apiParam {Number} endDate End date of policy active period
 * @apiParam {String} currency Currency type
 * @apiParam {String} customer Customer id
-* @apiParam {String} renter (optional) Customer id
+* @apiParam {String} renter Customer id
 * @apiParam {Object} product Product data
 * @apiParam {String} product.name Product name
 * @apiParam {String} product.category Product category (based in our <a href="#api-Categories-GetCategories">categories</a>)
