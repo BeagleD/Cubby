@@ -263,7 +263,7 @@ function updatePolicy({ session, policy }) {
       } else {
         reject({
           error: new ServerError({
-            message: 'Failure to update policy. Please try again in some minutes',
+            message: 'Failure to update policy. Please try again later',
             data: policy,
           }),
         });
@@ -319,7 +319,7 @@ function registerPolicy({ session, policy }) {
       if (err) {
         reject({
           error: new ServerError({
-            message: 'Failure to create policy. Please try again in some minutes',
+            message: 'Failure to create policy. Please try again later',
             data: policy,
           }),
         });
@@ -328,12 +328,12 @@ function registerPolicy({ session, policy }) {
             userId,
             id: policy.customer,
           }).then((customer) => {
-            // console.log('userId =', userId);
+            // console.log('api/models/policies.js::registerPolicy: userId =', userId);
             if (customer) {
               // send ticket email to owner
-              console.log('sending policy email to asset owner at',customer.email)
-              // console.log('customer =\n', customer);
-              // console.log('policy =\n', policy);
+              // console.log('api/models/policies.js::registerPolicy: sending policy email to asset owner at',customer.email)
+              // console.log('api/models/policies.js::registerPolicy: owner customer =\n', customer);
+              // console.log('api/models/policies.js::registerPolicy: owner policy =\n', policy);
               Email.sendTicketEmail({ customer, policy });
             }
         });
@@ -345,9 +345,9 @@ function registerPolicy({ session, policy }) {
           // console.log('userId =', userId);
           if (customer) {
             // send ticket email to renter
-            console.log('sending policy email to asset renter at',customer.email)
-            // console.log('customer =\n', customer);
-            // console.log('policy =\n', policy);
+            // console.log('api/models/policies.js::registerPolicy: sending policy email to asset renter at',customer.email)
+            // console.log('api/models/policies.js::registerPolicy: renter customer =\n', customer);
+            // console.log('api/models/policies.js::registerPolicy: renter policy =\n', policy);
             Email.sendTicketEmail({ customer, policy });
           }
       });
@@ -367,12 +367,12 @@ function findCustomer(session) {
     const { mongo, req, secretKey, userId } = session;
     const { CustomersDB } = mongo.getDB(secretKey);
     const policy = req.body;
-    console.log('models/claims.js::findCustomer: policy =\n', policy);
+    // console.log('models/claims.js::findCustomer: policy =\n', policy);
     // console.log('CustomersDB =\n', CustomersDB);
     // console.log('mongo =\n', mongo );
     // console.log('req =\n', req );
     // console.log('secretKey =\n', secretKey );
-    console.log('models/claims.js::findCustomer: userId =', userId );
+    // console.log('models/claims.js::findCustomer: userId =', userId );
     CustomersDB.findOne({ id: policy.customer, userId }).then((customer) => {
       if (customer) {
         // add customer_id
