@@ -367,15 +367,15 @@ function findCustomer(session) {
     const { mongo, req, secretKey, userId } = session;
     const { CustomersDB } = mongo.getDB(secretKey);
     const policy = req.body;
-    // console.log('policy =\n', policy);
+    console.log('models/claims.js::findCustomer: policy =\n', policy);
     // console.log('CustomersDB =\n', CustomersDB);
     // console.log('mongo =\n', mongo );
     // console.log('req =\n', req );
     // console.log('secretKey =\n', secretKey );
-    // console.log('userId =', userId );
+    console.log('models/claims.js::findCustomer: userId =', userId );
     CustomersDB.findOne({ id: policy.customer, userId }).then((customer) => {
       if (customer) {
-        // add customer _id
+        // add customer_id
         policy.customerId = customer._id;  // Customers collection -- _id field (key)
 
         resolve({ session, policy });
@@ -391,7 +391,7 @@ function findCustomer(session) {
     });
     CustomersDB.findOne({ id: policy.renter, userId }).then((renter) => {
       if (renter) {
-        // add customer _id
+        // add customer_id
         policy.renterId = renter._id;  // Customers collection -- _id field (key)
         resolve({ session, policy });
       } else {

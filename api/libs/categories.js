@@ -225,7 +225,7 @@ const categories = {
     'History',
     'Home & Garden',
     'International Publications',
-    'Large Print',
+    'Smith Print',
     'Law',
     'Lifestyle & Cultures',
     'Literary Magazine',

@@ -13,10 +13,10 @@ const router = express.Router();
 * @apiExample {curl} curl
 *   curl https://api.sharetempus.com/v1/customers/create \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \
-*     -d email="email@test.com" \
+*     -d email="customerjsmith@sharetempus.com" \
 *     -d "legalEntity[type]=individual" \
-*     -d "legalEntity[firstName]=Trenton" \
-*     -d "legalEntity[lastName]=Large" \
+*     -d "legalEntity[firstName]=John" \
+*     -d "legalEntity[lastName]=Smith" \
 *     -d "legalEntity[birthdate]=637124400000" \
 *     -d "legalEntity[ssnLast4]=1234" \
 *     -d "legalEntity[address][city]=New York City" \
@@ -30,11 +30,11 @@ const router = express.Router();
 *   var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');
 *
 *   ShareTempus.customers.create({
-*     email: 'email@test.com',
+*     email: 'customerjsmith@sharetempus.com',
 *     legalEntity: {
 *       type: 'individual',
-*       firstName: 'Trenton',
-*       lastName: 'Large',
+*       firstName: 'John',
+*       lastName: 'Smith',
 *       birthdate: 637124400000,
 *       ssnLast4: '1234',
 *       address: {
@@ -57,11 +57,11 @@ const router = express.Router();
 *   sharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');
 *
 *   customer = sharetempus.customers.create({
-*     email: "email@test.com",
+*     email: "customerjsmith@sharetempus.com",
 *     legalEntity: {
 *       type: "individual",
-*       firstName: "Trenton",
-*       lastName: "Large",
+*       firstName: "John",
+*       lastName: "Smith",
 *       birthdate: 637124400000,
 *       ssnLast4: "1234",
 *       address: {
@@ -113,11 +113,11 @@ const router = express.Router();
 *
 * @apiSuccessExample {json} Response (example):
 *  {
-*    "email": "email@test.com",
+*    "email": "customerjsmith@sharetempus.com",
 *    "legalEntity": {
 *      "type": "individual",
-*      "firstName": "Trenton",
-*      "lastName": "Large",
+*      "firstName": "John",
+*      "lastName": "Smith",
 *      "birthdate": 637124400000,
 *      "ssnLast4": "1234",
 *        "address": {
@@ -231,11 +231,11 @@ router.post('/customers/create', (req, res, next) => {
 *
 * @apiSuccessExample {json} Response (example):
 *  {
-*    "email": "email@test.com",
+*    "email": "customerjsmith@sharetempus.com",
 *    "legalEntity": {
 *      "type": "individual",
-*      "firstName": "Trenton",
-*      "lastName": "Large",
+*      "firstName": "John",
+*      "lastName": "Smith",
 *      "birthdate": 637124400000,
 *      "ssnLast4": "1234",
 *      "address": {
@@ -325,11 +325,11 @@ router.post('/customers/update', (req, res, next) => {
 *
 * @apiSuccessExample Response (example):
 *  {
-*    "email": "email@test.com",
+*    "email": "customerjsmith@sharetempus.com",
 *    "legalEntity": {
 *      "type": "individual",
-*      "firstName": "Trenton",
-*      "lastName": "Large",
+*      "firstName": "John",
+*      "lastName": "Smith",
 *      "birthdate": 637124400000,
 *      "ssnLast4": "1234",
 *      "address": {
@@ -374,13 +374,13 @@ router.get('/customers/:customer', (req, res, next) => {
 * @apiExample {curl} curl
 *   curl https://api.sharetempus.com/v1/customers/find \
 *     -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \
-*     -d email="email@test.com"
+*     -d email="customerjsmith@sharetempus.com"
 *
 * @apiExample {node} node
 *   var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');
 *
 *   ShareTempus.customers.find({
-*     email: 'email@test.com'
+*     email: 'customerjsmith@sharetempus.com'
 *   }).then(function(customer) {
 *     console.log(customer);
 *   }).catch(function(error) {
@@ -392,7 +392,7 @@ router.get('/customers/:customer', (req, res, next) => {
 *   sharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');
 *
 *   customer = sharetempus.customers.find({
-*     email: "email@test.com"
+*     email: "customerjsmith@sharetempus.com"
 *   });
 *   print(customer);
 *
@@ -420,11 +420,11 @@ router.get('/customers/:customer', (req, res, next) => {
 *
 * @apiSuccessExample Response (example):
 *  {
-*    "email": "email@test.com",
+*    "email": "customerjsmith@sharetempus.com",
 *    "legalEntity": {
 *      "type": "individual",
-*      "firstName": "Trenton",
-*      "lastName": "Large",
+*      "firstName": "John",
+*      "lastName": "Smith",
 *      "birthdate": 637124400000,
 *      "ssnLast4": "1234",
 *      "address": {
@@ -450,7 +450,7 @@ router.get('/customers/:customer', (req, res, next) => {
 *    "error": {
 *      "type": "invalid_request_error",
 *      "status": 402,
-*      "message": "Customer email@test.com not found",
+*      "message": "Customer customerjsmith@sharetempus.com not found",
 *    }
 *  }
 *
