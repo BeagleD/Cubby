@@ -43,7 +43,7 @@ class Email {
           <li> Manufacturer: ${product.manufacturer} </li>
         </ul>
         <hr style="border: 0; border-bottom: 1px solid #ddd;"/>
-        <p>You can use your ticket to open a claim clicking <a href="https://customers.sharetempus.com">here</a>. </p></br>
+        <p>You can use your ticket to open a claim at <a href="https://customers.sharetempus.com">customers.sharetempus.com</a>. </p></br>
         <small>© 2018 ShareTempus</small>
       `,
     };
@@ -103,7 +103,7 @@ class Email {
           <li> Manufacturer: ${product.manufacturer} </li>
         </ul>
         <hr style="border: 0; border-bottom: 1px solid #ddd;"/>
-        <p>You can use your ticket to open a claim clicking <a href="https://customers.sharetempus.com">here</a>. </p></br>
+        <p>You can check the status of your claim at <a href="https://customers.sharetempus.com">customers.sharetempus.com</a>. </p></br>
         <small>© 2018 ShareTempus</small>
       `,
     };
