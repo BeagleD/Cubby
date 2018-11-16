@@ -84,8 +84,11 @@ class Email {
         <hr style="border: 0; border-bottom: 1px solid #ddd;"/>
         <h4> Claim details: </h4>
         <ul>
+          <li> Claim ID: ${claim.id} </li>
+          <li> Submission Date: ${formatDate(createdAt)} </li>
           <li> Type: <b>${type}</b> </li>
-          <li> Filer email: ${filer.email} </li>
+          <li> Filer email address: ${filer.email} </li>
+          <li> Current status: ${status} </li>
         </ul>
         <h4> Covered Transaction details: </h4>
         <ul>
