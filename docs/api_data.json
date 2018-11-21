@@ -491,17 +491,17 @@
     "examples": [
       {
         "title": "curl",
-        "content": "curl https://api.sharetempus.com/v1/customers/create \\\n  -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \\\n  -d email=\"email@test.com\" \\\n  -d \"legalEntity[type]=individual\" \\\n  -d \"legalEntity[firstName]=Trenton\" \\\n  -d \"legalEntity[lastName]=Large\" \\\n  -d \"legalEntity[birthdate]=637124400000\" \\\n  -d \"legalEntity[ssnLast4]=1234\" \\\n  -d \"legalEntity[address][city]=New York City\" \\\n  -d \"legalEntity[address][country]=US\" \\\n  -d \"legalEntity[address][line1]=East 169th Street\" \\\n  -d \"legalEntity[address][line2]=Apt. 2A Bronx\" \\\n  -d \"legalEntity[address][postalCode]=10456\" \\\n  -d \"legalEntity[address][state]=New York\"",
+        "content": "curl https://api.sharetempus.com/v1/customers/create \\\n  -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \\\n  -d email=\"customerjsmith@sharetempus.com\" \\\n  -d \"legalEntity[type]=individual\" \\\n  -d \"legalEntity[firstName]=John\" \\\n  -d \"legalEntity[lastName]=Smith\" \\\n  -d \"legalEntity[birthdate]=637124400000\" \\\n  -d \"legalEntity[ssnLast4]=1234\" \\\n  -d \"legalEntity[address][city]=New York City\" \\\n  -d \"legalEntity[address][country]=US\" \\\n  -d \"legalEntity[address][line1]=East 169th Street\" \\\n  -d \"legalEntity[address][line2]=Apt. 2A Bronx\" \\\n  -d \"legalEntity[address][postalCode]=10456\" \\\n  -d \"legalEntity[address][state]=New York\"",
         "type": "curl"
       },
       {
         "title": "node",
-        "content": "var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\nShareTempus.customers.create({\n  email: 'email@test.com',\n  legalEntity: {\n    type: 'individual',\n    firstName: 'Trenton',\n    lastName: 'Large',\n    birthdate: 637124400000,\n    ssnLast4: '1234',\n    address: {\n      city: 'New York City',\n      country: 'US',\n      line1: 'East 169th Street',\n      line2: 'Apt. 2A Bronx',\n      postalCode: '10456',\n      state: 'New York'\n    }\n  }\n}).then(function(customer) {\n  console.log(customer);\n}).catch(function(error) {\n  console.log(error);\n});",
+        "content": "var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\nShareTempus.customers.create({\n  email: 'customerjsmith@sharetempus.com',\n  legalEntity: {\n    type: 'individual',\n    firstName: 'John',\n    lastName: 'Smith',\n    birthdate: 637124400000,\n    ssnLast4: '1234',\n    address: {\n      city: 'New York City',\n      country: 'US',\n      line1: 'East 169th Street',\n      line2: 'Apt. 2A Bronx',\n      postalCode: '10456',\n      state: 'New York'\n    }\n  }\n}).then(function(customer) {\n  console.log(customer);\n}).catch(function(error) {\n  console.log(error);\n});",
         "type": "node"
       },
       {
         "title": "python",
-        "content": "from sharetempus import ShareTempus;\nsharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\ncustomer = sharetempus.customers.create({\n  email: \"email@test.com\",\n  legalEntity: {\n    type: \"individual\",\n    firstName: \"Trenton\",\n    lastName: \"Large\",\n    birthdate: 637124400000,\n    ssnLast4: \"1234\",\n    address: {\n      city: \"New York City\",\n      country: \"US\",\n      line1: \"East 169th Street\",\n      line2: \"Apt. 2A Bronx\",\n      postalCode: \"10456\",\n      state: \"New York\"\n    }\n  }\n});\nprint(customer);",
+        "content": "from sharetempus import ShareTempus;\nsharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\ncustomer = sharetempus.customers.create({\n  email: \"customerjsmith@sharetempus.com\",\n  legalEntity: {\n    type: \"individual\",\n    firstName: \"John\",\n    lastName: \"Smith\",\n    birthdate: 637124400000,\n    ssnLast4: \"1234\",\n    address: {\n      city: \"New York City\",\n      country: \"US\",\n      line1: \"East 169th Street\",\n      line2: \"Apt. 2A Bronx\",\n      postalCode: \"10456\",\n      state: \"New York\"\n    }\n  }\n});\nprint(customer);",
         "type": "python"
       }
     ],
@@ -748,7 +748,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"email\": \"email@test.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"Trenton\",\n    \"lastName\": \"Large\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n      \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 2A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
+          "content": "{\n  \"email\": \"customerjsmith@sharetempus.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n      \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 2A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
           "type": "json"
         }
       ]
@@ -804,17 +804,17 @@
     "examples": [
       {
         "title": "curl",
-        "content": "curl https://api.sharetempus.com/v1/customers/find \\\n  -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \\\n  -d email=\"email@test.com\"",
+        "content": "curl https://api.sharetempus.com/v1/customers/find \\\n  -u sk_test_BWLY8F59QFqgrhfaH8qbXDth: \\\n  -d email=\"customerjsmith@sharetempus.com\"",
         "type": "curl"
       },
       {
         "title": "node",
-        "content": "var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\nShareTempus.customers.find({\n  email: 'email@test.com'\n}).then(function(customer) {\n  console.log(customer);\n}).catch(function(error) {\n  console.log(error);\n});",
+        "content": "var ShareTempus = require('sharetempus')('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\nShareTempus.customers.find({\n  email: 'customerjsmith@sharetempus.com'\n}).then(function(customer) {\n  console.log(customer);\n}).catch(function(error) {\n  console.log(error);\n});",
         "type": "node"
       },
       {
         "title": "python",
-        "content": "from sharetempus import ShareTempus;\nsharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\ncustomer = sharetempus.customers.find({\n  email: \"email@test.com\"\n});\nprint(customer);",
+        "content": "from sharetempus import ShareTempus;\nsharetempus = ShareTempus('sk_test_BWLY8F59QFqgrhfaH8qbXDth');\n\ncustomer = sharetempus.customers.find({\n  email: \"customerjsmith@sharetempus.com\"\n});\nprint(customer);",
         "type": "python"
       }
     ],
@@ -970,7 +970,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"email\": \"email@test.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"Trenton\",\n    \"lastName\": \"Large\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n    \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 2A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
+          "content": "{\n  \"email\": \"customerjsmith@sharetempus.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n    \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 2A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
           "type": "json"
         }
       ]
@@ -1007,7 +1007,7 @@
       "examples": [
         {
           "title": "Error-Response (example):",
-          "content": "{\n  \"error\": {\n    \"type\": \"invalid_request_error\",\n    \"status\": 402,\n    \"message\": \"Customer email@test.com not found\",\n  }\n}",
+          "content": "{\n  \"error\": {\n    \"type\": \"invalid_request_error\",\n    \"status\": 402,\n    \"message\": \"Customer customerjsmith@sharetempus.com not found\",\n  }\n}",
           "type": "json"
         }
       ]
@@ -1192,7 +1192,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"email\": \"email@test.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"Trenton\",\n    \"lastName\": \"Large\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n    \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 2A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
+          "content": "{\n  \"email\": \"customerjsmith@sharetempus.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n    \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 2A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
           "type": "json"
         }
       ]
@@ -1498,7 +1498,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"email\": \"email@test.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"Trenton\",\n    \"lastName\": \"Large\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n    \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 1A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
+          "content": "{\n  \"email\": \"customerjsmith@sharetempus.com\",\n  \"legalEntity\": {\n    \"type\": \"individual\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": 637124400000,\n    \"ssnLast4\": \"1234\",\n    \"address\": {\n      \"city\": \"New York City\",\n      \"country\": \"US\",\n      \"line1\": \"East 169th Street\",\n      \"line2\": \"Apt. 1A Bronx\",\n      \"postalCode\": \"10456\",\n      \"state\": \"New York\"\n    }\n  },\n  \"id\": \"cus_oC3ImnDw1Iqw1b3sx5CITtbc\",\n  \"createdAt\": 1473458205461\n}",
           "type": "json"
         }
       ]
@@ -1643,7 +1643,7 @@
       "examples": [
         {
           "title": "Response (example):",
-          "content": "{\n  \"id\" : \"evt_i5OkJyAi3ffM4mTjf68bRFz0\",\n  \"type\" : \"customer.created\",\n  \"createdAt\" : 1484964039313,\n  \"request\" : \"req_tWt2LCOAq2EYJJ10uWdGd3hP\",\n  \"isLiveMode\" : false,\n  \"data\" : {\n    \"email\" : \"email@test.com\",\n    \"legalEntity\" : {\n      \"type\" : \"individual\",\n      \"firstName\" : \"Trenton\",\n      \"lastName\" : \"Large\",\n      \"birthdate\" : 637124400000,\n      \"ssnLast4\" : \"1234\",\n      \"address\" : {\n        \"city\" : \"New York City\",\n        \"country\" : \"US\",\n        \"line1\" : \"East 169th Street\",\n        \"line2\" : \"Apt. 2A Bronx\",\n        \"postalCode\" : \"10456\",\n        \"state\" : \"New York\"\n      }\n    },\n    \"id\" : \"cus_4lwmU6mHpavjzGEqEPVFXGhq\",\n    \"createdAt\" : 1484964038659\n  }\n}",
+          "content": "{\n  \"id\" : \"evt_i5OkJyAi3ffM4mTjf68bRFz0\",\n  \"type\" : \"customer.created\",\n  \"createdAt\" : 1484964039313,\n  \"request\" : \"req_tWt2LCOAq2EYJJ10uWdGd3hP\",\n  \"isLiveMode\" : false,\n  \"data\" : {\n    \"email\" : \"customerjsmith@sharetempus.com\",\n    \"legalEntity\" : {\n      \"type\" : \"individual\",\n      \"firstName\" : \"John\",\n      \"lastName\" : \"Smith\",\n      \"birthdate\" : 637124400000,\n      \"ssnLast4\" : \"1234\",\n      \"address\" : {\n        \"city\" : \"New York City\",\n        \"country\" : \"US\",\n        \"line1\" : \"East 169th Street\",\n        \"line2\" : \"Apt. 2A Bronx\",\n        \"postalCode\" : \"10456\",\n        \"state\" : \"New York\"\n      }\n    },\n    \"id\" : \"cus_4lwmU6mHpavjzGEqEPVFXGhq\",\n    \"createdAt\" : 1484964038659\n  }\n}",
           "type": "json"
         }
       ]
@@ -1983,7 +1983,7 @@
             "type": "String",
             "optional": false,
             "field": "renter",
-            "description": "<p>(optional) Customer id</p>"
+            "description": "<p>Customer id</p>"
           },
           {
             "group": "Parameter",

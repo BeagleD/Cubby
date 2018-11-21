@@ -53,11 +53,11 @@ const router = express.Router();
 *    "request" : "req_tWt2LCOAq2EYJJ10uWdGd3hP",
 *    "isLiveMode" : false,
 *    "data" : {
-*      "email" : "email@test.com",
+*      "email" : "customerjsmith@sharetempus.com",
 *      "legalEntity" : {
 *        "type" : "individual",
-*        "firstName" : "Trenton",
-*        "lastName" : "Large",
+*        "firstName" : "John",
+*        "lastName" : "Smith",
 *        "birthdate" : 637124400000,
 *        "ssnLast4" : "1234",
 *        "address" : {

@@ -11,6 +11,7 @@ let MONGO_TEST_URL = 'mongodb://admin:admin@127.0.0.1:27017/test';
 
 // dev DB urls
 if (process.argv[2] === 'dev') {
+  console.log('using Dev DBs at ds015403.mlab.com:15403');
   MONGO_URL = 'mongodb://admin:admin@ds015403.mlab.com:15403/sharetempus';
   MONGO_TEST_URL = 'mongodb://admin:admin@ds015403.mlab.com:15403/sharetempus-test';
 }

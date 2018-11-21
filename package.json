@@ -1,7 +1,7 @@
 {
   "name": "sharetempus-api",
   "version": "0.1.0",
-  "description": "ShareTempus API documentation",
+  "description": "ShareTempus API & documentation",
   "main": "server.js",
   "scripts": {
     "start": "nodemon api.js dev --ignore 'tests/*.js'",

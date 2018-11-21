@@ -7,11 +7,11 @@ const CLAIM = {
 };
 
 const CUSTOMER = {
-  email: 'email@test.com',
+  email: 'customerjsmith@sharetempus.com',
   legalEntity: {
     type: 'individual',
-    firstName: 'Trenton',
-    lastName: 'Large',
+    firstName: 'John',
+    lastName: 'Smith',
     birthdate: 637124400000,
     ssnLast4: '1234',
     address: {
