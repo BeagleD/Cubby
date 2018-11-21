@@ -17,6 +17,7 @@ import {
   InvalidRequestError,
   ServerError,
 } from '../error';
+import PriceScraper from '../services/scraper';
 
 class Policies {
   constructor() {
@@ -75,6 +76,7 @@ class Policies {
       } else {
         validate(context, policy, session)
           .then(findCustomer)
+          .then(PriceScraper.getPrice)
           .then(Matrix.generatePolicyQuote)
           .then(createPolicy)
           .then(resolve)
